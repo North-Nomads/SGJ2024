@@ -1,4 +1,5 @@
-﻿using SGJ.Mobs;
+﻿using Cinemachine;
+using SGJ.Mobs;
 using System;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -16,6 +17,8 @@ namespace SGJ.SceneManagement
         private const string MobSpawnPoint = "MobSpawnPoint";
         private const string PlayerSpawnPoint = "PlayerSpawnPoint";
         private const string PlayerPrefabPath = "Prefabs/Player/Player";
+        private const string PlayerCameraPath = "Prefabs/Player/Virtual Camera";
+
         private MobSpawner _mobSpawner;
         private GameObject[] _spawnPoints;
         private PlayerController _player;
@@ -35,12 +38,14 @@ namespace SGJ.SceneManagement
             _currentWaveIndex = -1;
 
             InstantiatePlayer();
+            InstantiateCamera();
             InstantiateMobs();
             LaunchWavesLoop();
         }
 
         private void Update()
         {
+            // DEBUG ONLY
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 _mobSpawner.KillAllMobs();
@@ -54,6 +59,13 @@ namespace SGJ.SceneManagement
             if (playerSpawnPoint == null)
                 throw new Exception($"No player spawn point found. Assign spawn point object corresponding Tag: {PlayerSpawnPoint}");
             _player = Instantiate(player, playerSpawnPoint.transform.position, Quaternion.identity);
+        }
+
+        private void InstantiateCamera()
+        {
+            var camera = Resources.Load<CinemachineVirtualCamera>(PlayerCameraPath);
+            var cameraInstante = Instantiate(camera);
+            cameraInstante.Follow = _player.transform;
         }
 
         private void InstantiateMobs()
