@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 namespace SGJ.Mobs
 {
-    public abstract class MobState : IHittable
+    public abstract class MobState
     {
         public readonly NavMeshAgent Agent;
         public readonly Mob Self;
@@ -23,6 +23,5 @@ namespace SGJ.Mobs
         public abstract void BehaveThisState();
         public abstract void OnStateStarted();
         public abstract void OnStateStopped();
-        public virtual void OnEntityGotHit(float incomeDamage) => Self.MobCombat.HandleIncomeDamage(incomeDamage);
     }
 }

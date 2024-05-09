@@ -1,3 +1,4 @@
+using SGJ.Combat;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -7,12 +8,14 @@ public class Bullet : MonoBehaviour
 
     private float _actualLifespan;
     private ObjectPool<Bullet> _pool;
+    private float _damage;
 
     public Vector3 Speed { get; set; }
 
     private void OnEnable()
     {
         _actualLifespan = lifeSpan;
+        _damage = Random.Range(12f, 8f);
     }
     public ObjectPool<Bullet> Pool
     {
@@ -20,14 +23,14 @@ public class Bullet : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        //Check layer and deal damage
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Mob"))
+        {
+            if (collision.gameObject.TryGetComponent<IHittable>(out IHittable hittable))
+                hittable.OnEntityGotHit(_damage);
+        }
         _pool.Release(this);
     }
 
-    private void OnCollisionStay(Collision collision)
-    {
-        
-    }
 
     private void Update()
     {

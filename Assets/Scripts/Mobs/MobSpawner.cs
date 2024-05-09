@@ -7,12 +7,12 @@ namespace SGJ.Mobs
         private const string MOBS_PATH = "Prefabs/Mobs";
         [SerializeField] private int mobsQuantity;
 
-        private PlayerMovement _player;
+        private PlayerController _player;
         private Mob[] _mobs;
 
         private void Start()
         {
-            _player = FindObjectOfType<PlayerMovement>();
+            _player = FindObjectOfType<PlayerController>();
             _mobs = Resources.LoadAll<Mob>(MOBS_PATH);
             SpawnMobs();
         }

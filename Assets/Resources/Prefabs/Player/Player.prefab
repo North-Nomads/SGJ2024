@@ -75,10 +75,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSpeed: 5
   bulletSpeed: 15
-  bulletSpread: 30
+  bulletSpread: 5
   initalFireDelay: 0.3
   finalFireDelay: 0.02
-  timeToRampUp: 1
+  timeToRampUp: 1.7
   gunPoint: {fileID: 6518423791132579389}
   playerCamera: {fileID: 0}
   bulletPrefab: {fileID: 3365592121844557590, guid: 683a6134caebb8d40a1db8ac570fd52c,
