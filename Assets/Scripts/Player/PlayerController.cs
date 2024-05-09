@@ -1,11 +1,13 @@
+using SGJ.Combat;
 using UnityEngine;
 using UnityEngine.Pool;
 
 //yeah, that's a Controller all-in-one script. Cry about it
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IHittable
 {
     [Header("Player Stats")]
     [SerializeField] private float playerSpeed;
+    [SerializeField] private float playerHealth;
     [Header("GunStats")]
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float bulletSpread;
@@ -97,4 +99,20 @@ public class PlayerController : MonoBehaviour
     {
         Destroy(bullet.gameObject);
     }
+
+    public void OnEntityGotHit(float incomeDamage)
+    {
+        playerHealth -= incomeDamage;
+        if (playerHealth < 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
+    }
+
+    
 }
