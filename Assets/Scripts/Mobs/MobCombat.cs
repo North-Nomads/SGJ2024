@@ -6,8 +6,9 @@ namespace SGJ.Mobs
     {
         private readonly float _maxHealth;
         private float _currentHealth;
+        private Mob _thisMob;
 
-        public EventHandler OnMobDied = delegate { };
+        public EventHandler<Mob> OnMobDied = delegate { };
 
         public float CurrentHealth
         {
@@ -16,15 +17,17 @@ namespace SGJ.Mobs
             {
                 _currentHealth = value;
                 if (_currentHealth < 0)
-                    OnMobDied(this, null);
+                    OnMobDied(this, _thisMob);
             }
         }
+
         public bool IsAlive => _currentHealth > 0;
          
-        public MobCombat(float maxHealth)
+        public MobCombat(float maxHealth, Mob thisMob)
         {
             _maxHealth = maxHealth;
             CurrentHealth = maxHealth;
+            _thisMob = thisMob;
         }
 
         public void ResetCurrentValues()

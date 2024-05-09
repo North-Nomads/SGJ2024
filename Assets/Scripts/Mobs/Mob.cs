@@ -25,7 +25,7 @@ namespace SGJ.Mobs
         {
             Player = player;
             Agent = GetComponent<NavMeshAgent>();
-            MobCombat = new MobCombat(maxHealth);
+            MobCombat = new MobCombat(maxHealth, this);
             MobCombat.OnMobDied += owner.HandleMobDeath;
             Agent.speed = defaultSpeed;
         }
@@ -54,6 +54,6 @@ namespace SGJ.Mobs
             CurrentState.OnStateStarted();
         }
 
-        public virtual void OnEntityGotHit(float incomeDamage) => Self.MobCombat.HandleIncomeDamage(incomeDamage);
+        public virtual void OnEntityGotHit(float incomeDamage) => MobCombat.HandleIncomeDamage(incomeDamage);
     }
 }
