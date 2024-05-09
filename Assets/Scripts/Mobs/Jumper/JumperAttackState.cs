@@ -49,6 +49,8 @@ namespace SGJ.Mobs.Saw
                 yield return new WaitForSeconds(_jumpChargeTime);
 
                 Agent.speed = _jumpSpeed;
+                Agent.SetDestination(Player.position);
+
                 var inJumpTimeElapsed = 0f;
                 while (inJumpTimeElapsed < _jumpDuration)
                 {
@@ -56,7 +58,7 @@ namespace SGJ.Mobs.Saw
                     yield return null;
 
                     float value = _jumpHeightCurve.Evaluate(inJumpTimeElapsed);
-                    Self.transform.position = new Vector3(Self.transform.position.x, value, Self.transform.position.z);
+                    Transform.position = new Vector3(Transform.position.x, value, Transform.position.z);
                 }
                 
                 _jumpChargeTimeLeft = _jumpChargeTime;

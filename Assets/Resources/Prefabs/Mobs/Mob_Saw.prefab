@@ -71,7 +71,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  defaultSpeed: 0
+  defaultSpeed: 3.5
   attackRange: 2
   attackChargeTime: 0.5
   spinAttackDuration: 2

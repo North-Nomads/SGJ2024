@@ -16,8 +16,11 @@ namespace SGJ
         public override void BehaveThisState()
         {
             Agent.SetDestination(Player.position);
-            if (Vector3.Distance(Transform.position, Player.position)<= _attackRange)
+            if (Vector3.Distance(Transform.position, Player.position) <= _attackRange)
+            {
+                Debug.Log("Switching to saw attack");
                 Self.SwitchState<SawAttackState>();
+            }
         }
 
         public override void OnStateStarted()

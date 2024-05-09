@@ -174,7 +174,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
-  defaultSpeed: 3
+  defaultSpeed: 1.6
   attackRange: 6
   jumpStrength: 2
   jumpDuration: 1
