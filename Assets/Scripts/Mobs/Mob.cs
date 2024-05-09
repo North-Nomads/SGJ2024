@@ -47,7 +47,7 @@ namespace SGJ.Mobs
             // Set new state
             var state = AllStates.FirstOrDefault(st => st is T);
 
-            Debug.Log($"{gameObject.name} is switching state: {CurrentState} => {state}");
+            //Debug.Log($"{gameObject.name} is switching state: {CurrentState} => {state}");
             CurrentState = state;
 
             // Start and assign new state
