@@ -14,7 +14,7 @@ namespace SGJ.Mobs.Saw
         {
             AllStates = new List<MobState>
             {
-                new ChaseState(Agent, this, Player, attackRange),
+                new SawChaseState(Agent, this, Player, attackRange),
                 new SawAttackState(Agent, this, Player, attackChargeTime, spinAttackDuration, attackRange, spinningSpeed)
             };
 

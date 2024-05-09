@@ -33,12 +33,11 @@ namespace SGJ.Mobs.Saw
                 PerformAttack();
             
             if (Vector3.Distance(Transform.position, Player.position) >= _attackRange)
-                Self.SwitchState<ChaseState>();
+                Self.SwitchState<SawChaseState>();
         }
 
         private void PerformAttack()
         {
-            Debug.Log("Started Performing");
             _isChargingAttack = true;
             Self.StartCoroutine(SpinAround());
 

@@ -11,12 +11,14 @@ namespace SGJ.Mobs
     public abstract class Mob : MonoBehaviour, IStateSwitcher
     {
         [SerializeField] private float maxHealth;
+        [SerializeField] private float defaultSpeed;
 
         protected List<MobState> AllStates;
         protected Transform Player { get; private set; }
         protected NavMeshAgent Agent { get; private set; }
         public MobCombat MobCombat { get;  protected set; }
         public MobState CurrentState { get; protected set; }
+        public float DefaultSpeed => defaultSpeed;
 
         public void SetMobParameters(Transform player)
         {
@@ -24,6 +26,7 @@ namespace SGJ.Mobs
             Agent = GetComponent<NavMeshAgent>();
             MobCombat = new MobCombat(maxHealth);
             MobCombat.OnMobDied += HandleMobDeath;
+            Agent.speed = defaultSpeed;
         }
 
         private void Update()
