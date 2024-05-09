@@ -27,12 +27,10 @@ namespace SGJ.Mobs
             _spawnPoints = spawnPoints;
             _player = player;
             _mobs = Resources.LoadAll<Mob>(MobsPath);
-            Debug.Log($"Loaded {_mobs.Length} mobs");
         }
 
         private void StartNewWave(int mobsToSpawn)
         {
-            Debug.Log($"Spawning {mobsToSpawn}");
             _aliveMobs = new List<Mob>(mobsToSpawn);
             _mobToKillLeft = mobsToSpawn;
             for (int i = 0; i < mobsToSpawn; i++)
