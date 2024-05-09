@@ -18,7 +18,7 @@ namespace SGJ.SceneManagement
         private const string PlayerPrefabPath = "Prefabs/Player/Player";
         private MobSpawner _mobSpawner;
         private GameObject[] _spawnPoints;
-        private PlayerMovement _player;
+        private PlayerController _player;
         private int _currentWaveIndex;
 
         private void OnValidate()
@@ -49,7 +49,7 @@ namespace SGJ.SceneManagement
 
         private void InstantiatePlayer()
         {
-            var player = Resources.Load<PlayerMovement>(PlayerPrefabPath);
+            var player = Resources.Load<PlayerController>(PlayerPrefabPath);
             var playerSpawnPoint = GameObject.FindGameObjectWithTag(PlayerSpawnPoint);
             if (playerSpawnPoint == null)
                 throw new Exception($"No player spawn point found. Assign spawn point object corresponding Tag: {PlayerSpawnPoint}");

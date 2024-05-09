@@ -13,7 +13,7 @@ namespace SGJ.Mobs
 
         private GoalObserver _goalObserver;
         private GameObject[] _spawnPoints;
-        private PlayerMovement _player;
+        private PlayerController _player;
         private Mob[] _mobs;
         private int _mobToKillLeft;
         private List<Mob> _aliveMobs;
@@ -21,7 +21,7 @@ namespace SGJ.Mobs
         private Mob GetRandomMob => _mobs[Random.Range(0, _mobs.Length)];
         private Transform GetRandomSpawnPoint => _spawnPoints[Random.Range(0, _spawnPoints.Length)].transform;
 
-        public MobSpawner(GoalObserver goalObserver, GameObject[] spawnPoints, PlayerMovement player)
+        public MobSpawner(GoalObserver goalObserver, GameObject[] spawnPoints, PlayerController player)
         {
             _goalObserver = goalObserver;
             _spawnPoints = spawnPoints;
