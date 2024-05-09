@@ -16,8 +16,8 @@ namespace SGJ
         public override void BehaveThisState()
         {
             Agent.SetDestination(Player.position);
-            if (Agent.remainingDistance <= _attackRange)
-                Self.SwitchState<AttackState>();
+            if (Vector3.Distance(Transform.position, Player.position)<= _attackRange)
+                Self.SwitchState<SawAttackState>();
         }
 
         public override void OnStateStarted()

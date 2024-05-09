@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace SGJ.Mobs
 {
-    [RequireComponent(typeof(NavMeshAgent), typeof(MobCombat))]
+    [RequireComponent(typeof(NavMeshAgent))]
     public abstract class Mob : MonoBehaviour, IStateSwitcher
     {
         [SerializeField] private float maxHealth;
@@ -15,9 +16,9 @@ namespace SGJ.Mobs
         protected Transform Player { get; private set; }
         protected NavMeshAgent Agent { get; private set; }
         public MobCombat MobCombat { get;  protected set; }
-        public MobState CurrentState { get; private set; }
+        public MobState CurrentState { get; protected set; }
 
-        private void SetMobParameters(Transform player)
+        public void SetMobParameters(Transform player)
         {
             Player = player;
             Agent = GetComponent<NavMeshAgent>();
