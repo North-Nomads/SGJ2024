@@ -21,12 +21,12 @@ namespace SGJ.Mobs
         public MobState CurrentState { get; protected set; }
         public float DefaultSpeed => defaultSpeed;
 
-        public void SetMobParameters(Transform player)
+        public void SetMobParameters(Transform player, MobSpawner owner)
         {
             Player = player;
             Agent = GetComponent<NavMeshAgent>();
-            MobCombat = new MobCombat(maxHealth);
-            MobCombat.OnMobDied += HandleMobDeath;
+            MobCombat = new MobCombat(maxHealth, this);
+            MobCombat.OnMobDied += owner.HandleMobDeath;
             Agent.speed = defaultSpeed;
         }
 
@@ -34,8 +34,6 @@ namespace SGJ.Mobs
         {
             CurrentState.BehaveThisState();
         }
-
-        private void HandleMobDeath(object sender, EventArgs e) => Destroy(gameObject);
 
         /// <summary>
         /// Changes current mob state
@@ -55,6 +53,7 @@ namespace SGJ.Mobs
             // Start and assign new state
             CurrentState.OnStateStarted();
         }
+
         public virtual void OnEntityGotHit(float incomeDamage) => MobCombat.HandleIncomeDamage(incomeDamage);
     }
 }

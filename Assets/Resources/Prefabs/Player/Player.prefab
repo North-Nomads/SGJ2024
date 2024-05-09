@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1957942699207049379}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 4893042623019962573}
   - {fileID: 6518423791132579389}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &2255446321561863803
 CharacterController:
@@ -74,13 +74,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpeed: 5
+  playerHealth: 0
   bulletSpeed: 15
   bulletSpread: 5
   initalFireDelay: 0.3
   finalFireDelay: 0.02
   timeToRampUp: 1.7
   gunPoint: {fileID: 6518423791132579389}
-  playerCamera: {fileID: 0}
   bulletPrefab: {fileID: 3365592121844557590, guid: 683a6134caebb8d40a1db8ac570fd52c,
     type: 3}
 --- !u!1 &132634294722652210
