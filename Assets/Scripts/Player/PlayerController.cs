@@ -16,21 +16,22 @@ public class PlayerController : MonoBehaviour, IHittable
     [SerializeField] private float timeToRampUp;
     [Header("References")]
     [SerializeField] Transform gunPoint;
-    [SerializeField] private Camera playerCamera;
     [SerializeField] private Bullet bulletPrefab;
 
+    private CharacterController _characterController;
     private ObjectPool<Bullet> _bulletPool;
     private Vector3 _cursorPostion;
     private Vector3 _aimDirection;
-    private CharacterController _characterController;
     private float _shotCoolDown;
     private float _timeShooting;
+    private Camera _playerCamera;
 
 
     private void Start()
     {
         _characterController = GetComponent<CharacterController>();
         _bulletPool = new(SpawnBullet, OnGetBullet, OnReleaseBullet, OnDestroyBullet, true, 30, 70);
+        _playerCamera = Camera.main;
     }
 
     
@@ -43,7 +44,7 @@ public class PlayerController : MonoBehaviour, IHittable
 
     private void Look()
     {
-        Physics.Raycast(playerCamera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit);
+        Physics.Raycast(_playerCamera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit);
         _cursorPostion = hit.point;
         transform.LookAt(new Vector3(_cursorPostion.x, transform.position.y, _cursorPostion.z));
         _aimDirection = (new Vector3(_cursorPostion.x, transform.position.y, _cursorPostion.z) - transform.position).normalized;
