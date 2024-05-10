@@ -1,6 +1,10 @@
 using SGJ.Combat;
+using SGJ.GameItems;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
+using Random = UnityEngine.Random;
 
 namespace SGJ.Player
 {
@@ -10,7 +14,6 @@ namespace SGJ.Player
     {
         [Header("Player Stats")]
         [SerializeField] private float playerSpeed;
-        [SerializeField] private float playerHealth;
 
         [Header("GunStats")]
         [SerializeField] private float bulletSpeed;
@@ -24,6 +27,8 @@ namespace SGJ.Player
         [SerializeField] Transform gunPoint;
         [SerializeField] private Bullet bulletPrefab;
 
+
+        private PlayerInventory _playerInventory;
         private float _currentPlayerHealth;
         private CharacterController _characterController;
         private ObjectPool<Bullet> _bulletPool;
@@ -37,8 +42,11 @@ namespace SGJ.Player
         private Light _muzzleFlash;
         private float _flashTickGlowTimeLeft;
 
+        public int AmmoLeft => _playerInventory.Ammo;
+        public Dictionary<Items, int> PlayerInventory => _playerInventory.Inventory;
+
         private bool IsPlayerAlive => CurrentPlayerHealth > 0;
-        public System.EventHandler<PlayerController> OnPlayerDied = delegate { };
+        public EventHandler<PlayerController> OnPlayerDied = delegate { };
 
         public float CurrentPlayerHealth
         {
@@ -46,7 +54,7 @@ namespace SGJ.Player
             private set
             {
                 _currentPlayerHealth = value;
-                _playerUI.OnPlayerHealthChanged(this, _currentPlayerHealth / playerHealth);
+                _playerUI.OnPlayerHealthChanged(this, _currentPlayerHealth / PlayerSaveController.DefaultPlayerHealth);
                 if (!IsPlayerAlive)
                     OnPlayerDied(this, this);
             }
@@ -57,8 +65,13 @@ namespace SGJ.Player
             _characterController = GetComponent<CharacterController>();
             _bulletPool = new(SpawnBullet, OnGetBullet, OnReleaseBullet, OnDestroyBullet, true, 30, 70);
             _playerCamera = Camera.main;
+
             _playerUI = GetComponent<PlayerUI>();
-            CurrentPlayerHealth = playerHealth;
+            _playerUI.Initialize();
+
+            _playerInventory = new PlayerInventory();
+            CurrentPlayerHealth = PlayerSaveController.DefaultPlayerHealth;
+
             _cameraManager = _playerCamera.gameObject.GetComponent<CameraManager>();
             _muzzleFlash = gunPoint.GetChild(0).GetComponent<Light>();
         }
@@ -68,6 +81,7 @@ namespace SGJ.Player
             if (!IsPlayerAlive)
                 return;
 
+            _playerUI.UpdateAmmoInHUD(AmmoLeft);
             Look();
             Move();
             Shoot();
@@ -95,7 +109,7 @@ namespace SGJ.Player
             else
                 _muzzleFlash.enabled = false;
 
-            if (_shotCoolDown > 0 || ammo <= 0)
+            if (_shotCoolDown > 0 || AmmoLeft <= 0)
                 return;
             if(!Input.GetMouseButton(0))
             {
@@ -104,7 +118,7 @@ namespace SGJ.Player
             }
             
             _bulletPool.Get();
-            ammo--;
+            _playerInventory.Inventory[Items.Ammo]--;
             _timeShooting += Mathf.Lerp(initalFireDelay, finalFireDelay,
                 Mathf.Clamp01(_timeShooting / timeToRampUp));
             _shotCoolDown = Mathf.Lerp(initalFireDelay, finalFireDelay,
@@ -142,11 +156,6 @@ namespace SGJ.Player
             Destroy(bullet.gameObject);
         }
 
-        public void OnEntityGotHit(float incomeDamage)
-        {
-            CurrentPlayerHealth -= incomeDamage;
-            print($"Player health: {playerHealth}");
-        }
+        public void OnEntityGotHit(float incomeDamage) => CurrentPlayerHealth -= incomeDamage;
     }
-
 }
