@@ -67,7 +67,6 @@ namespace SGJ.Player
 
             _playerInventory = new PlayerInventory();
             CurrentPlayerHealth = PlayerSaveController.DefaultPlayerHealth;
-
         }
 
         private void Update()

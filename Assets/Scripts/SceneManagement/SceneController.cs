@@ -9,6 +9,11 @@ namespace SGJ.SceneManagement
             SceneManager.LoadScene(id);
         }
 
+        public static void ReturnToHub()
+        {
+            SceneManager.LoadScene(0);
+        }
+
         public static void ReloadScene()
         {
             var currentSceneID = SceneManager.GetActiveScene().buildIndex;
