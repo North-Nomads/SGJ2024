@@ -1,5 +1,7 @@
+using Assets.Scripts.Mobs;
 using SGJ.Combat;
 using SGJ.Player;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -12,12 +14,19 @@ namespace SGJ.Mobs
     {
         private const string PlayerTag = "Player";
 
+        [Header("Drops")]
+        [SerializeField, Range(0, 1)] private float generalDropChance;
+        [SerializeField] private Probabilities[] dropChances;
+
+        [Header("Common values")]
         [SerializeField] private float maxHealth;
         [SerializeField] private float defaultSpeed;
         [SerializeField] private float damage;
+        
 
         protected List<MobState> AllStates;
         private PlayerUI _playerUI;
+        private MobDropper _mobDropper;
 
         protected PlayerController Player { get; private set; }
         protected NavMeshAgent Agent { get; private set; }
@@ -32,11 +41,28 @@ namespace SGJ.Mobs
             MobCombat = new MobCombat(maxHealth, this);
             MobCombat.OnMobDied += owner.HandleMobDeath;
             Agent.speed = defaultSpeed;
+
+            _mobDropper = new MobDropper(this, generalDropChance, dropChances);
         }
 
         private void Update()
         {
             CurrentState.BehaveThisState();
+        }
+
+        private void OnValidate()
+        {
+            if (dropChances.Length == 0)
+                return;
+
+            float total = 0f;
+            for (int i = 0; i < dropChances.Length - 1; i++)
+            {
+                total += dropChances[i].DropChance;
+                if (total > 1)
+                    throw new Exception("Total chances are >1. Sum must be in range [0, 1]");
+            }
+            dropChances[^1].DropChance = 1 - total;
         }
 
         /// <summary>
@@ -64,6 +90,20 @@ namespace SGJ.Mobs
         {
             if (other.CompareTag(PlayerTag))
                 Player.OnEntityGotHit(damage);
+        }
+    }
+
+    [Serializable]
+    public class Probabilities
+    {
+        [SerializeField] private Items item;
+        [SerializeField, Range(0, 1)] private float dropChance;
+
+        public Items Item => item;
+        public float DropChance 
+        {
+            get => dropChance;
+            set => dropChance = value;
         }
     }
 }

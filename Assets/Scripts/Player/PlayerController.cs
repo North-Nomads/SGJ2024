@@ -5,7 +5,7 @@ using UnityEngine.Pool;
 namespace SGJ.Player
 {
     //yeah, that's a Controller all-in-one script. Cry about it
-    [RequireComponent(typeof(PlayerUI))]
+    [RequireComponent(typeof(PlayerUI), typeof(PlayerInventory))]
     public class PlayerController : MonoBehaviour, IHittable
     {
         [Header("Player Stats")]

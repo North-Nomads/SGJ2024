@@ -70,6 +70,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38d653443c5b8df4f948215cf4fc53c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  generalDropChance: 0
+  dropChances:
+  - item: 0
+    dropChance: 0.71
+  - item: 0
+    dropChance: 0.29000002
   maxHealth: 100
   defaultSpeed: 3.5
   damage: 20
