@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8651586154310370136}
   - component: {fileID: 2255446321561863803}
   - component: {fileID: 1957942699207049379}
+  - component: {fileID: 2998143484515855394}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -82,6 +83,20 @@ MonoBehaviour:
   timeToRampUp: 1.7
   gunPoint: {fileID: 6518423791132579389}
   bulletPrefab: {fileID: 3365592121844557590, guid: 683a6134caebb8d40a1db8ac570fd52c,
+    type: 3}
+--- !u!114 &2998143484515855394
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112040217086357810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 076eea7829b2d5848894640e2a1e68ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerUIPrefab: {fileID: 8517632370489400712, guid: 35fe10d2b7a77ca44a9f4f5d7b811bb0,
     type: 3}
 --- !u!1 &132634294722652210
 GameObject:

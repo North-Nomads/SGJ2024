@@ -1,4 +1,5 @@
 ﻿using SGJ.Combat;
+using SGJ.Player;
 using SGJ.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;

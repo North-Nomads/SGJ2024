@@ -1,4 +1,5 @@
 using SGJ.Combat;
+using SGJ.Player;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -16,6 +17,8 @@ namespace SGJ.Mobs
         [SerializeField] private float damage;
 
         protected List<MobState> AllStates;
+        private PlayerUI _playerUI;
+
         protected PlayerController Player { get; private set; }
         protected NavMeshAgent Agent { get; private set; }
         public MobCombat MobCombat { get;  protected set; }

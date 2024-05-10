@@ -1,5 +1,6 @@
 ﻿using Cinemachine;
 using SGJ.Mobs;
+using SGJ.Player;
 using System;
 using System.Collections;
 using UnityEngine;
