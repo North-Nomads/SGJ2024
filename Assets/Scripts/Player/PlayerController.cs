@@ -1,18 +1,19 @@
 using SGJ.Combat;
 using SGJ.GameItems;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
+using Random = UnityEngine.Random;
 
 namespace SGJ.Player
 {
     //yeah, that's a Controller all-in-one script. Cry about it
-    [RequireComponent(typeof(PlayerUI), typeof(PlayerInventory))]
+    [RequireComponent(typeof(PlayerUI))]
     public class PlayerController : MonoBehaviour, IHittable
     {
         [Header("Player Stats")]
         [SerializeField] private float playerSpeed;
-        [SerializeField] private float playerHealth;
 
         [Header("GunStats")]
         [SerializeField] private float bulletSpeed;
@@ -20,7 +21,6 @@ namespace SGJ.Player
         [SerializeField] private float initalFireDelay;
         [SerializeField] private float finalFireDelay;
         [SerializeField] private float timeToRampUp;
-        [SerializeField] private int defaultAmmo;
 
         [Header("References")]
         [SerializeField] Transform gunPoint;
@@ -38,13 +38,11 @@ namespace SGJ.Player
         private Camera _playerCamera;
         private PlayerUI _playerUI;
 
-        public float DefaultHealth => playerHealth;
-        public int DefaultAmmo => defaultAmmo;
         public int AmmoLeft => _playerInventory.Ammo;
-        public Dictionary<Items, int> Inventory => _playerInventory.Inventory;
+        public Dictionary<Items, int> PlayerInventory => _playerInventory.Inventory;
 
         private bool IsPlayerAlive => CurrentPlayerHealth > 0;
-        public System.EventHandler<PlayerController> OnPlayerDied = delegate { };
+        public EventHandler<PlayerController> OnPlayerDied = delegate { };
 
         public float CurrentPlayerHealth
         {
@@ -52,7 +50,7 @@ namespace SGJ.Player
             private set
             {
                 _currentPlayerHealth = value;
-                _playerUI.OnPlayerHealthChanged(this, _currentPlayerHealth / playerHealth);
+                _playerUI.OnPlayerHealthChanged(this, _currentPlayerHealth / PlayerSaveController.DefaultPlayerHealth);
                 if (!IsPlayerAlive)
                     OnPlayerDied(this, this);
             }
@@ -63,10 +61,13 @@ namespace SGJ.Player
             _characterController = GetComponent<CharacterController>();
             _bulletPool = new(SpawnBullet, OnGetBullet, OnReleaseBullet, OnDestroyBullet, true, 30, 70);
             _playerCamera = Camera.main;
+
             _playerUI = GetComponent<PlayerUI>();
+            _playerUI.Initialize();
 
             _playerInventory = new PlayerInventory();
-            CurrentPlayerHealth = playerHealth;
+            CurrentPlayerHealth = PlayerSaveController.DefaultPlayerHealth;
+
         }
 
         private void Update()
@@ -74,6 +75,7 @@ namespace SGJ.Player
             if (!IsPlayerAlive)
                 return;
 
+            _playerUI.UpdateAmmoInHUD(AmmoLeft);
             Look();
             Move();
             Shoot();
@@ -87,29 +89,31 @@ namespace SGJ.Player
             _aimDirection = (new Vector3(_cursorPostion.x, transform.position.y, _cursorPostion.z) - transform.position).normalized;
         }
 
-    private void Move()
-    {
-        Vector3 movementVector = Vector3.ClampMagnitude(new(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")), 1);
-        _characterController.SimpleMove(movementVector * playerSpeed);
-    }
-    private void Shoot()
-    {
-        _shotCoolDown -= Time.deltaTime;
-        if (_shotCoolDown > 0 || AmmoLeft <= 0)
-            return;
-        if(Input.GetMouseButton(0))
+        private void Move()
         {
-            _bulletPool.Get();
-            _playerInventory.Inventory[Items.Ammo]--;
-            _timeShooting += Mathf.Lerp(initalFireDelay, finalFireDelay,
-                Mathf.Clamp01(_timeShooting / timeToRampUp)); ;
-            _shotCoolDown = Mathf.Lerp(initalFireDelay, finalFireDelay,
-                Mathf.Clamp01(_timeShooting / timeToRampUp)); ;
+            Vector3 movementVector = Vector3.ClampMagnitude(new(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")), 1);
+            _characterController.SimpleMove(movementVector * playerSpeed);
         }
-        else
-            _timeShooting = 0;
-        
-    }
+        private void Shoot()
+        {
+            _shotCoolDown -= Time.deltaTime;
+            if (_shotCoolDown > 0 || AmmoLeft <= 0)
+                return;
+
+            if (Input.GetMouseButton(0))
+            {
+                _bulletPool.Get();
+                _playerInventory.Inventory[Items.Ammo]--;
+                _timeShooting += Mathf.Lerp(initalFireDelay, finalFireDelay,
+                    Mathf.Clamp01(_timeShooting / timeToRampUp)); ;
+                _shotCoolDown = Mathf.Lerp(initalFireDelay, finalFireDelay,
+                    Mathf.Clamp01(_timeShooting / timeToRampUp)); ;
+            }
+            else
+            {
+                _timeShooting = 0;
+            }
+        }
 
         private Bullet SpawnBullet()
         {

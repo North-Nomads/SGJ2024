@@ -20,7 +20,8 @@ namespace SGJ.GameItems
         {
             if (other.CompareTag(PlayerTag))
             {
-                other.GetComponent<PlayerController>().Inventory[_item] += _quantity;
+                print($"{_item}, {_quantity}");
+                other.GetComponent<PlayerController>().PlayerInventory[_item] += _quantity;
                 Destroy(gameObject);
             }
                 

@@ -16,6 +16,7 @@ namespace SGJ.Player
 
         public static float SavedPlayerHealth => _savedPlayerHealth;
         public static Dictionary<Items, int> InventoryItems => _inventory;
+        public static float DefaultPlayerHealth => _defaultPlayerHealth;
 
         static PlayerSaveController()
         {

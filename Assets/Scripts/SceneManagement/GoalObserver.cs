@@ -107,7 +107,7 @@ namespace SGJ.SceneManagement
         {
             if (_currentWaveIndex == mobsInWaves.Length - 1)
             {
-                PlayerSaveController.SavePlayerProgress(_player.CurrentPlayerHealth, _player.Inventory);
+                PlayerSaveController.SavePlayerProgress(_player.CurrentPlayerHealth, _player.PlayerInventory);
                 HandleLevelGoalAchieved();
                 print("Goal achieved. Level ended");
                 return;
