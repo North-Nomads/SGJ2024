@@ -27,7 +27,6 @@ namespace SGJ.Player
         [SerializeField] Transform gunPoint;
         [SerializeField] private Bullet bulletPrefab;
 
-
         private PlayerInventory _playerInventory;
         private float _currentPlayerHealth;
         private CharacterController _characterController;

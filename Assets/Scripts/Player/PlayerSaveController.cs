@@ -1,4 +1,5 @@
 ﻿using SGJ.GameItems;
+using SGJ.SceneManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,16 +40,15 @@ namespace SGJ.Player
         public static float DefaultPlayerHealth => _defaultPlayerHealth;
 
         public static bool IsCurrentMissionLastOne => _currentMissionIndex == _currentRunMissionsAmount;
+        public static LevelDifficulty UpcomingDifficulty { get; set; }
 
         static PlayerSaveController()
         {
             string[] rawText = ParsePlayerConfig();
             SetupDefaultPlayerValues(rawText);
-            Debug.Log($"Set up default values: hp={_defaultPlayerHealth}, ammo={_inventory[Items.Ammo]}");
 
             rawText = ParseGameConfig();
             SetupDefaultGameValues(rawText);
-            Debug.Log($"Game locations in range [{_minLocationsAmount}; {_maxLocationsAmount}");
 
             static void SetupDefaultGameValues(string[] rawText)
             {
@@ -99,12 +99,10 @@ namespace SGJ.Player
                 _inventory[item] = 0;
 
             _inventory[Items.Ammo] = _defaultPlayerAmmo;
-            Debug.Log($"Reset player progress. Ammo: {_defaultPlayerAmmo}");
         }
 
         public static void SavePlayerProgress(float currentHealth, Dictionary<Items, int> inventory)
         {
-            Debug.Log($"Saved progress: hp left = {currentHealth}, ammo = {inventory[Items.Ammo]}");
             _inventory = inventory;
             _savedPlayerHealth = currentHealth;
         }

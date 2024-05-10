@@ -9,11 +9,7 @@ namespace SGJ.Player
     {
         private Dictionary<Items, int> _inventory = new();
 
-        public PlayerInventory()
-        {
-            _inventory = PlayerSaveController.InventoryItems;
-            Debug.Log($"Inventory loaded with ammo = {_inventory[Items.Ammo]}");
-        }
+        public PlayerInventory() => _inventory = PlayerSaveController.InventoryItems;
 
         public int Ammo
         {
