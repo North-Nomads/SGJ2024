@@ -9,38 +9,27 @@ namespace SGJ.SceneManagement
 {
     public class GoalObserver : MonoBehaviour
     {
+        private const string MobSpawnPointTag = "MobSpawnPoint";
+
         [SerializeField] private int wavesQuantity;
-        [SerializeField] private int[] mobsInWaves;
         [SerializeField] private float delayBetweenWaves;
         [SerializeField] private bool isPeacefulLocation;
-        [SerializeField] private float delayBeforeReturnToHub = 3f;
+        [SerializeField] private float delayBeforeReturnToHub = 3f;        
 
-        private const string MobSpawnPoint = "MobSpawnPoint";
-        private const string PlayerSpawnPoint = "PlayerSpawnPoint";
-        private const string PlayerPrefabPath = "Prefabs/Player/Player";
-        private const string PlayerCameraPath = "Prefabs/Player/Virtual Camera";
-
+        private AssetSpawner _assetSpawner;
         private MobSpawner _mobSpawner;
         private GameObject[] _spawnPoints;
         private PlayerController _player;
         private int _currentWaveIndex;
-
-        private void OnValidate()
-        {
-            if (mobsInWaves == null)
-                mobsInWaves = new int[] { };
-
-            if (wavesQuantity != mobsInWaves.Length)
-                Debug.LogWarning("Waves Quantity != Mobs In Waves Array Size. Don't forget to set up waves array");
-        }
+        private int _wavesThisMission;
 
         private void Start()
         {
-            _currentWaveIndex = -1;
+            _assetSpawner = new AssetSpawner(this);
+            _currentWaveIndex = 0;
+            _wavesThisMission = (int)PlayerSaveController.UpcomingDifficulty;
+            _player = _assetSpawner.Player;
 
-            InstantiatePlayer();
-            InstantiateCamera();
-            
             if (isPeacefulLocation)
                 return;
 
@@ -48,71 +37,52 @@ namespace SGJ.SceneManagement
             LaunchWavesLoop();
         }
 
-        private void Update()
-        {
-            // DEBUG ONLY
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                _mobSpawner.KillAllMobs();
-            }
-        }
-
-        private void InstantiatePlayer()
-        {
-            var player = Resources.Load<PlayerController>(PlayerPrefabPath);
-            var playerSpawnPoint = GameObject.FindGameObjectWithTag(PlayerSpawnPoint);
-            if (playerSpawnPoint == null)
-                throw new Exception($"No player spawn point found. Assign spawn point object corresponding Tag: {PlayerSpawnPoint}");
-            _player = Instantiate(player, playerSpawnPoint.transform.position, Quaternion.identity);
-            _player.OnPlayerDied += HandlePlayerLose;
-        }
-
-        private void HandlePlayerLose(object sender, PlayerController player)
+        public void HandlePlayerDied(object sender, PlayerController player)
         {
             PlayerSaveController.ResetPlayerProgress();
             StartCoroutine(ReturnToHubAfterDelay());
 
-            IEnumerator ReturnToHubAfterDelay()
-            {
-                yield return new WaitForSeconds(delayBeforeReturnToHub);
-                SceneController.LoadScene(0);
-            }
         }
 
-        private void InstantiateCamera()
+        private IEnumerator ReturnToHubAfterDelay()
         {
-            var camera = Resources.Load<CinemachineVirtualCamera>(PlayerCameraPath);
-            var cameraInstante = Instantiate(camera);
-            cameraInstante.Follow = _player.transform;
+            yield return new WaitForSeconds(delayBeforeReturnToHub);
+            SceneController.LoadScene(0);
         }
 
         private void InstantiateMobs()
         {
-            _spawnPoints = GameObject.FindGameObjectsWithTag(MobSpawnPoint);
+            _spawnPoints = GameObject.FindGameObjectsWithTag(MobSpawnPointTag);
             _mobSpawner = new MobSpawner(this, _spawnPoints, _player);
         }
 
         private void LaunchWavesLoop()
         {
             _currentWaveIndex++;
-            _mobSpawner.TriggerNewWaveAfterDelay(delayBetweenWaves, mobsInWaves[_currentWaveIndex]);
+            _mobSpawner.TriggerNewWaveAfterDelay(delayBetweenWaves);
         }
 
         private void HandleLevelGoalAchieved()
         {
             if (PlayerSaveController.IsCurrentMissionLastOne)
             {
-                SceneController.ReturnToHub();
+                PlayerSaveController.ResetPlayerProgress();
+                StartCoroutine(ReturnToHubAfterDelay());
                 return;
             }
 
+            HandlePlayerNextMissionChoose();
+        }
+
+        public void HandlePlayerNextMissionChoose()
+        {
             PlayerSaveController.CurrentMissionIndex++;
             SceneController.LoadScene(1);
         }
 
         public void HandleWaveCleaned()
         {
-            if (_currentWaveIndex == mobsInWaves.Length - 1)
+            if (_currentWaveIndex == _wavesThisMission)
             {
                 PlayerSaveController.SavePlayerProgress(_player.CurrentPlayerHealth, _player.PlayerInventory);
                 HandleLevelGoalAchieved();

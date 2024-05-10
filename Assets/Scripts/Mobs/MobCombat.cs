@@ -17,9 +17,15 @@ namespace SGJ.Mobs
             {
                 _currentHealth = value;
                 if (_currentHealth < 0)
-                    OnMobDied(this, _thisMob);
+                {
+                    if (!_isDead)
+                        OnMobDied(this, _thisMob);
+                    _isDead = true;
+                }
             }
         }
+        
+        private bool _isDead;
 
         public bool IsAlive => _currentHealth > 0;
          
