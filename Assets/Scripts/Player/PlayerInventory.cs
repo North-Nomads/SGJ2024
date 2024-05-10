@@ -28,8 +28,6 @@ namespace SGJ.Player
 
         public Dictionary<Items, int> Inventory => _inventory;
 
-        public void AddItemOfType(Items item, int quantity = 1) => _inventory[item] += quantity;
-
         public void ConsumeItemOfType(Items item, int quantity = 1) => _inventory[item] -= quantity;
     }
 }
