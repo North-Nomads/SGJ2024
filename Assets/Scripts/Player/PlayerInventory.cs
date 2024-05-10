@@ -18,14 +18,14 @@ namespace SGJ.Player
                 _inventory.Add(item, 0);
         }
 
-        public void AddItemOfType(Items item)
+        public void AddItemOfType(Items item, int quantity=1)
         {
-            _inventory[item]++;
+            _inventory[item] += quantity;
         }
 
-        public void ConsumeItemOfType(Items item)
+        public void ConsumeItemOfType(Items item, int quantity=1)
         {
-            _inventory[item]--;
+            _inventory[item] -= quantity;
         }
     }
 }

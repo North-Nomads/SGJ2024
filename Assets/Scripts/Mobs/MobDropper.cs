@@ -1,7 +1,6 @@
 ﻿
 using SGJ.Mobs;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Assets.Scripts.Mobs
 {
@@ -36,10 +35,10 @@ namespace Assets.Scripts.Mobs
                     continue;
                 }
 
+                var itemQuantity = Random.Range(_dropChances[i].MinQuantity, _dropChances[i].MaxQuantity + 1);
                 Object.Instantiate(_dropChances[i].ItemModel.Prefab,
-                    _mob.transform.position + Vector3.up * 2,
-                    Quaternion.identity,
-                    null).OnObjectCreated(_dropChances[i].ItemModel.Item);
+                    _mob.transform.position + Vector3.up * 2, Quaternion.identity, null)
+                    .OnObjectCreated(_dropChances[i].ItemModel.Item, itemQuantity);
             }
         }
 

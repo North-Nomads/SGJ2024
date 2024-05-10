@@ -100,11 +100,16 @@ namespace SGJ.Mobs
     {
         [SerializeField, Range(0, 1)] private float dropChance;
         [SerializeField] private ItemModel model;
+        [SerializeField, Min(1)] private int minQuantity = 1;
+        [SerializeField, Min(1)] private int maxQuantity = 1;
+
         public ItemModel ItemModel => model;
         public float DropChance 
         {
             get => dropChance;
             set => dropChance = value;
         }
+        public int MinQuantity => minQuantity;
+        public int MaxQuantity => maxQuantity;
     }
 }

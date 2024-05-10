@@ -8,14 +8,19 @@ namespace SGJ.GameItems
     {
         private const string PlayerTag = "Player";
         private Items _item;
+        private int _quantity;
 
-        public void OnObjectCreated(Items item) => _item = item;
+        public void OnObjectCreated(Items item, int quantity=1)
+        {
+            _item = item;
+            _quantity = quantity;
+        }
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag(PlayerTag))
             {
-                other.GetComponent<PlayerInventory>().AddItemOfType(_item);
+                other.GetComponent<PlayerInventory>().AddItemOfType(_item, _quantity);
                 Destroy(gameObject);
             }
                 
