@@ -81,6 +81,7 @@ MonoBehaviour:
   initalFireDelay: 0.3
   finalFireDelay: 0.02
   timeToRampUp: 1.7
+  ammo: 1300
   gunPoint: {fileID: 6518423791132579389}
   bulletPrefab: {fileID: 3365592121844557590, guid: 683a6134caebb8d40a1db8ac570fd52c,
     type: 3}

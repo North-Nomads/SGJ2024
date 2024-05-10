@@ -18,24 +18,12 @@ namespace SGJ.Player
         [SerializeField] private float initalFireDelay;
         [SerializeField] private float finalFireDelay;
         [SerializeField] private float timeToRampUp;
-
+        [SerializeField] private float ammo;
         [Header("References")]
         [SerializeField] Transform gunPoint;
         [SerializeField] private Bullet bulletPrefab;
 
         private float _currentPlayerHealth;
-        public float CurrentPlayerHealth
-        {
-            get => _currentPlayerHealth;
-            private set
-            {
-                _currentPlayerHealth = value;
-                _playerUI.OnPlayerHealthChanged(this, _currentPlayerHealth / playerHealth);
-                if (!IsPlayerAlive)
-                    OnPlayerDied(this, this);
-            }
-        }
-
         private CharacterController _characterController;
         private ObjectPool<Bullet> _bulletPool;
         private Vector3 _cursorPostion;
@@ -47,6 +35,18 @@ namespace SGJ.Player
 
         private bool IsPlayerAlive => CurrentPlayerHealth > 0;
         public System.EventHandler<PlayerController> OnPlayerDied = delegate { };
+
+        public float CurrentPlayerHealth
+        {
+            get => _currentPlayerHealth;
+            private set
+            {
+                _currentPlayerHealth = value;
+                _playerUI.OnPlayerHealthChanged(this, _currentPlayerHealth / playerHealth);
+                if (!IsPlayerAlive)
+                    OnPlayerDied(this, this);
+            }
+        }
 
         private void Start()
         {
@@ -75,28 +75,29 @@ namespace SGJ.Player
             _aimDirection = (new Vector3(_cursorPostion.x, transform.position.y, _cursorPostion.z) - transform.position).normalized;
         }
 
-        private void Move()
+    private void Move()
+    {
+        Vector3 movementVector = Vector3.ClampMagnitude(new(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")), 1);
+        _characterController.SimpleMove(movementVector * playerSpeed);
+    }
+    private void Shoot()
+    {
+        _shotCoolDown -= Time.deltaTime;
+        if (_shotCoolDown > 0 || ammo <= 0)
+            return;
+        if(Input.GetMouseButton(0))
         {
-            Vector3 movementVector = Vector3.ClampMagnitude(new(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")), 1);
-            _characterController.SimpleMove(movementVector * playerSpeed);
+            _bulletPool.Get();
+            ammo--;
+            _timeShooting += Mathf.Lerp(initalFireDelay, finalFireDelay,
+                Mathf.Clamp01(_timeShooting / timeToRampUp)); ;
+            _shotCoolDown = Mathf.Lerp(initalFireDelay, finalFireDelay,
+                Mathf.Clamp01(_timeShooting / timeToRampUp)); ;
         }
-        private void Shoot()
-        {
-            _shotCoolDown -= Time.deltaTime;
-            if (_shotCoolDown > 0)
-                return;
-            if (Input.GetMouseButton(0))
-            {
-                _bulletPool.Get();
-                _timeShooting += Mathf.Lerp(initalFireDelay, finalFireDelay,
-                    Mathf.Clamp01(_timeShooting / timeToRampUp)); ;
-                _shotCoolDown = Mathf.Lerp(initalFireDelay, finalFireDelay,
-                    Mathf.Clamp01(_timeShooting / timeToRampUp)); ;
-            }
-            else
-                _timeShooting = 0;
-
-        }
+        else
+            _timeShooting = 0;
+        
+    }
 
         private Bullet SpawnBullet()
         {
