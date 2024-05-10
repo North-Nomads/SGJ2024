@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SGJ.SceneManagement;
+using System;
 using UnityEngine;
 
 namespace SGJ.Player
@@ -24,6 +25,15 @@ namespace SGJ.Player
 
             _lastAmmoCapacity = currentAmmo;
             _canvasInstance.UpdateAmmoText(currentAmmo);
+        }
+
+        public void ToggleHatchPanel(bool toggle, NextLevelHatch hatch)
+        {
+            if (toggle)
+                _canvasInstance.EnableHatchPanel(hatch);
+            else
+                _canvasInstance.DisableHatchPanel();
+
         }
 
     }

@@ -1,118 +1,122 @@
-﻿using Cinemachine;
-using SGJ.Mobs;
+﻿using SGJ.Mobs;
 using SGJ.Player;
-using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace SGJ.SceneManagement
 {
     public class GoalObserver : MonoBehaviour
     {
-        [SerializeField] private int wavesQuantity;
-        [SerializeField] private int[] mobsInWaves;
-        [SerializeField] private float delayBetweenWaves;
-        [SerializeField] private bool isPeacefulLocation;
+        private const string MobSpawnPointTag = "MobSpawnPoint";
+        private const string PathToHatch = "Prefabs/Props/Hatches/";
+        private const string HatchSpawnPointTag = "HatchSpawnPoint";
         [SerializeField] private float delayBeforeReturnToHub = 3f;
+        [SerializeField] private float delayBetweenWaves;
+        [SerializeField] private bool isHubLocation;
 
-        private const string MobSpawnPoint = "MobSpawnPoint";
-        private const string PlayerSpawnPoint = "PlayerSpawnPoint";
-        private const string PlayerPrefabPath = "Prefabs/Player/Player";
-        private const string PlayerCameraPath = "Prefabs/Player/Virtual Camera";
+        private readonly List<NextLevelHatch> _hatchInstances = new();
 
+        private AssetSpawner _assetSpawner;
         private MobSpawner _mobSpawner;
         private GameObject[] _spawnPoints;
         private PlayerController _player;
         private int _currentWaveIndex;
-
-        private void OnValidate()
-        {
-            if (mobsInWaves == null)
-                mobsInWaves = new int[] { };
-
-            if (wavesQuantity != mobsInWaves.Length)
-                Debug.LogWarning("Waves Quantity != Mobs In Waves Array Size. Don't forget to set up waves array");
-        }
+        private int _wavesThisMission;
+        private bool _isLevelCleared;
 
         private void Start()
         {
-            _currentWaveIndex = -1;
+            print(PlayerSaveController.UpcomingDifficulty);
+            _assetSpawner = new AssetSpawner(this);
+            _currentWaveIndex = 0;
+            _wavesThisMission = (int)PlayerSaveController.UpcomingDifficulty;
+            _player = _assetSpawner.Player;
 
-            InstantiatePlayer();
-            InstantiateCamera();
-            
-            if (isPeacefulLocation)
+            var isMissionPeacful = PlayerSaveController.UpcomingDifficulty == LevelDifficulty.Peace;
+
+            _isLevelCleared = isMissionPeacful;
+
+            if (isHubLocation)
+            {
+                var hubHatch = GameObject.FindGameObjectWithTag("HubHatch").GetComponent<NextLevelHatch>();
+                hubHatch.OnHatchTriggered += HandleHatchWasChosen;
+                return;
+            }
+
+            SpawnHatches();
+
+            if (isMissionPeacful)
                 return;
 
             InstantiateMobs();
             LaunchWavesLoop();
-        }
 
-        private void Update()
-        {
-            // DEBUG ONLY
-            if (Input.GetKeyDown(KeyCode.Space))
+            void SpawnHatches()
             {
-                _mobSpawner.KillAllMobs();
+                var spawnPosition = GameObject.FindGameObjectWithTag(HatchSpawnPointTag).transform;
+                var allHatchesCombos = Resources.LoadAll<GameObject>(PathToHatch);
+                var hatchesGroup = Instantiate(allHatchesCombos[Random.Range(1, allHatchesCombos.Length)], spawnPosition);
+                var hatches = hatchesGroup.GetComponentsInChildren<NextLevelHatch>();
+
+                foreach (var hatch in hatches)
+                {
+                    hatch.OnHatchTriggered += HandleHatchWasChosen;
+                    _hatchInstances.Add(hatch);
+                }
             }
         }
 
-        private void InstantiatePlayer()
+        private void HandleHatchWasChosen(object sender, LevelDifficulty e)
         {
-            var player = Resources.Load<PlayerController>(PlayerPrefabPath);
-            var playerSpawnPoint = GameObject.FindGameObjectWithTag(PlayerSpawnPoint);
-            if (playerSpawnPoint == null)
-                throw new Exception($"No player spawn point found. Assign spawn point object corresponding Tag: {PlayerSpawnPoint}");
-            _player = Instantiate(player, playerSpawnPoint.transform.position, Quaternion.identity);
-            _player.OnPlayerDied += HandlePlayerLose;
+            if (!_isLevelCleared)
+                return;
+
+            print($"Sender: {sender}");
+            PlayerSaveController.UpcomingDifficulty = e;
+
+            if (isHubLocation)
+                return;
+
+            PlayerSaveController.CurrentMissionIndex++;
+            SceneController.LoadScene(1);
         }
 
-        private void HandlePlayerLose(object sender, PlayerController player)
+        public void HandlePlayerDied(object sender, PlayerController player)
         {
             PlayerSaveController.ResetPlayerProgress();
             StartCoroutine(ReturnToHubAfterDelay());
-
-            IEnumerator ReturnToHubAfterDelay()
-            {
-                yield return new WaitForSeconds(delayBeforeReturnToHub);
-                SceneController.LoadScene(0);
-            }
         }
 
-        private void InstantiateCamera()
+        private IEnumerator ReturnToHubAfterDelay()
         {
-            var camera = Resources.Load<CinemachineVirtualCamera>(PlayerCameraPath);
-            var cameraInstante = Instantiate(camera);
-            cameraInstante.Follow = _player.transform;
+            yield return new WaitForSeconds(delayBeforeReturnToHub);
+            SceneController.LoadScene(0);
         }
 
         private void InstantiateMobs()
         {
-            _spawnPoints = GameObject.FindGameObjectsWithTag(MobSpawnPoint);
+            _spawnPoints = GameObject.FindGameObjectsWithTag(MobSpawnPointTag);
             _mobSpawner = new MobSpawner(this, _spawnPoints, _player);
         }
 
         private void LaunchWavesLoop()
         {
             _currentWaveIndex++;
-            _mobSpawner.TriggerNewWaveAfterDelay(delayBetweenWaves, mobsInWaves[_currentWaveIndex]);
-        }
-
-        private void HandleLevelGoalAchieved()
-        {
-            SceneController.LoadScene(0);
+            _mobSpawner.TriggerNewWaveAfterDelay(delayBetweenWaves);
         }
 
         public void HandleWaveCleaned()
         {
-            if (_currentWaveIndex == mobsInWaves.Length - 1)
+            if (_currentWaveIndex == _wavesThisMission)
             {
                 PlayerSaveController.SavePlayerProgress(_player.CurrentPlayerHealth, _player.PlayerInventory);
-                HandleLevelGoalAchieved();
-                print("Goal achieved. Level ended");
+                _isLevelCleared = true;
                 return;
             }
 
+            print($"Launching wave {_currentWaveIndex++}/{_wavesThisMission}");
             LaunchWavesLoop();
         }
     }
