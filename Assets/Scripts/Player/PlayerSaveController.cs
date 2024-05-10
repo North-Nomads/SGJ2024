@@ -32,7 +32,7 @@ namespace SGJ.Player
                 _inventory.Add(item, 0);
 
             _inventory[Items.Ammo] = _defaultPlayerAmmo;
-            Debug.Log($"Set up default values: hp={_defaultPlayerHealth}, ammo={_inventory[Items.Ammo]}");
+            //Debug.Log($"Set up default values: hp={_defaultPlayerHealth}, ammo={_inventory[Items.Ammo]}");
         }
 
         public static void ResetPlayerProgress()

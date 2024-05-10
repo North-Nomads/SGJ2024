@@ -12,7 +12,7 @@ namespace SGJ.Player
         public PlayerInventory()
         {
             _inventory = PlayerSaveController.InventoryItems;
-            Debug.Log($"Inventory loaded with ammo = {_inventory[Items.Ammo]}");
+            //Debug.Log($"Inventory loaded with ammo = {_inventory[Items.Ammo]}");
         }
 
         public int Ammo

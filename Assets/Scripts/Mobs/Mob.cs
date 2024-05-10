@@ -28,6 +28,8 @@ namespace SGJ.Mobs
         protected List<MobState> AllStates;
         private PlayerUI _playerUI;
         private MobDropper _mobDropper;
+        private float _timeSinceDamaged;
+        private float timeToBonk = 0.3f;
 
         protected PlayerController Player { get; private set; }
         protected NavMeshAgent Agent { get; private set; }
@@ -45,11 +47,23 @@ namespace SGJ.Mobs
             Agent.speed = defaultSpeed;
 
             _mobDropper = new MobDropper(this, generalDropChance, dropChances);
+
+            MobCombat.OnMobHit += AnimateBonk;
         }
 
         private void Update()
         {
             CurrentState.BehaveThisState();
+
+            BonkCounter();
+        }
+
+        private void BonkCounter()
+        {
+            _timeSinceDamaged += Time.deltaTime;
+            if (_timeSinceDamaged <= timeToBonk)
+                gameObject.transform.GetChild(0).transform.localScale = Vector3.Lerp(Vector3.one, 0.8f * Vector3.one, 2 * (timeToBonk / 2 - _timeSinceDamaged) / timeToBonk);
+            Debug.Log(gameObject.transform.GetChild(0));
         }
 
         private void OnValidate()
@@ -84,6 +98,11 @@ namespace SGJ.Mobs
 
             // Start and assign new state
             CurrentState.OnStateStarted();
+        }
+
+        private void AnimateBonk(object sender, EventArgs e)
+        {
+            _timeSinceDamaged = 0;
         }
 
         public virtual void OnEntityGotHit(float incomeDamage) => MobCombat.HandleIncomeDamage(incomeDamage);
