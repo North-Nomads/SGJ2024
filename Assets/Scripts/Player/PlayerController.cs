@@ -24,8 +24,6 @@ namespace SGJ.Player
         [SerializeField] private Bullet bulletPrefab;
 
         private float _currentPlayerHealth;
-        
-
         private CharacterController _characterController;
         private ObjectPool<Bullet> _bulletPool;
         private Vector3 _cursorPostion;
