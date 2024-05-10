@@ -11,17 +11,20 @@ namespace SGJ.Mobs
     [RequireComponent(typeof(NavMeshAgent))]
     public abstract class Mob : MonoBehaviour, IStateSwitcher, IHittable
     {
+        private const string PlayerTag = "Player";
+
         [SerializeField] private float maxHealth;
         [SerializeField] private float defaultSpeed;
+        [SerializeField] private float damage;
 
         protected List<MobState> AllStates;
-        protected Transform Player { get; private set; }
+        protected PlayerController Player { get; private set; }
         protected NavMeshAgent Agent { get; private set; }
         public MobCombat MobCombat { get;  protected set; }
         public MobState CurrentState { get; protected set; }
         public float DefaultSpeed => defaultSpeed;
 
-        public void SetMobParameters(Transform player, MobSpawner owner)
+        public void SetMobParameters(PlayerController player, MobSpawner owner)
         {
             Player = player;
             Agent = GetComponent<NavMeshAgent>();
@@ -55,5 +58,11 @@ namespace SGJ.Mobs
         }
 
         public virtual void OnEntityGotHit(float incomeDamage) => MobCombat.HandleIncomeDamage(incomeDamage);
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag(PlayerTag))
+                Player.OnEntityGotHit(damage);
+        }
     }
 }

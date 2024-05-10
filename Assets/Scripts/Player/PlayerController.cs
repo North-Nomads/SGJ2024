@@ -104,10 +104,9 @@ public class PlayerController : MonoBehaviour, IHittable
     public void OnEntityGotHit(float incomeDamage)
     {
         playerHealth -= incomeDamage;
+        print($"Player health: {playerHealth}");
         if (playerHealth < 0)
-        {
             Die();
-        }
     }
 
     private void Die()

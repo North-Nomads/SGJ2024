@@ -36,7 +36,7 @@ namespace SGJ.Mobs
             for (int i = 0; i < mobsToSpawn; i++)
             {
                 var instance = Object.Instantiate(GetRandomMob, GetRandomSpawnPoint);
-                instance.SetMobParameters(_player.transform, this);
+                instance.SetMobParameters(_player, this);
                 _aliveMobs.Add(instance);
             }
         }

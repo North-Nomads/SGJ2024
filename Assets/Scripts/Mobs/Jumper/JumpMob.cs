@@ -16,8 +16,8 @@ namespace SGJ.Mobs.Saw
         {
             AllStates = new List<MobState>
             {
-                new JumperChaseState(Agent, this, Player, attackRange),
-                new JumperAttackState(Agent, this, Player, jumpStrength, jumpDuration, jumpChargeTime, jumpCurve, jumpSpeed)
+                new JumperChaseState(Agent, this, Player.transform, attackRange),
+                new JumperAttackState(Agent, this, Player.transform, jumpStrength, jumpDuration, jumpChargeTime, jumpCurve, jumpSpeed)
             };
 
             CurrentState = AllStates[0];

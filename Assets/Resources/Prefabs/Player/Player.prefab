@@ -74,7 +74,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpeed: 5
-  playerHealth: 0
+  playerHealth: 100
   bulletSpeed: 15
   bulletSpread: 5
   initalFireDelay: 0.3
