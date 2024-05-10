@@ -153,8 +153,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wavesQuantity: 2
-  mobsInWaves: 0400000001000000
   delayBetweenWaves: 3
+  isPeacefulLocation: 0
+  delayBeforeReturnToHub: 3
 --- !u!4 &148924817
 Transform:
   m_ObjectHideFlags: 0
@@ -896,7 +897,7 @@ Transform:
   m_GameObject: {fileID: 1824171333}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 1, z: 10}
+  m_LocalScale: {x: 3, y: 1, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1579395362}
@@ -1003,5 +1004,5 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 7b1e0b027f4bf42419d55422a6d8e337, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 186b07aaca1f7bd41b026b42d5dcec56, type: 2}
   m_BuildHeightMesh: 0
