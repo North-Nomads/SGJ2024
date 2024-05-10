@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float initalFireDelay;
     [SerializeField] private float finalFireDelay;
     [SerializeField] private float timeToRampUp;
+    [SerializeField] private float ammo;
     [Header("References")]
     [SerializeField] Transform gunPoint;
     [SerializeField] private Camera playerCamera;
@@ -50,16 +51,17 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         Vector3 movementVector = Vector3.ClampMagnitude(new(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")), 1);
-        _characterController.SimpleMove(movementVector*playerSpeed);
+        _characterController.SimpleMove(movementVector * playerSpeed);
     }
     private void Shoot()
     {
         _shotCoolDown -= Time.deltaTime;
-        if (_shotCoolDown > 0)
+        if (_shotCoolDown > 0 || ammo <= 0)
             return;
         if(Input.GetMouseButton(0))
         {
             _bulletPool.Get();
+            ammo--;
             _timeShooting += Mathf.Lerp(initalFireDelay, finalFireDelay,
                 Mathf.Clamp01(_timeShooting / timeToRampUp)); ;
             _shotCoolDown = Mathf.Lerp(initalFireDelay, finalFireDelay,
