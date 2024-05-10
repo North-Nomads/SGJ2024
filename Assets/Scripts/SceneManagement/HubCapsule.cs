@@ -13,6 +13,7 @@ namespace SGJ.SceneManagement
             if (other.CompareTag(PlayerTagName))
             {
                 PlayerSaveController.ResetPlayerProgress();
+                PlayerSaveController.LaunchNewMission();
                 SceneController.LoadScene(CombatSceneID);
             }
         }

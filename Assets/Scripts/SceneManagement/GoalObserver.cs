@@ -100,7 +100,14 @@ namespace SGJ.SceneManagement
 
         private void HandleLevelGoalAchieved()
         {
-            SceneController.LoadScene(0);
+            if (PlayerSaveController.IsCurrentMissionLastOne)
+            {
+                SceneController.ReturnToHub();
+                return;
+            }
+
+            PlayerSaveController.CurrentMissionIndex++;
+            SceneController.LoadScene(1);
         }
 
         public void HandleWaveCleaned()
@@ -109,7 +116,6 @@ namespace SGJ.SceneManagement
             {
                 PlayerSaveController.SavePlayerProgress(_player.CurrentPlayerHealth, _player.PlayerInventory);
                 HandleLevelGoalAchieved();
-                print("Goal achieved. Level ended");
                 return;
             }
 
