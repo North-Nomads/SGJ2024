@@ -22,6 +22,13 @@ namespace SGJ.SceneManagement
         [SerializeField] private bool isHubHatch;
 
         public EventHandler<LevelDifficulty> OnHatchTriggered = delegate { };
+        private Animator _animator;
+
+        private void Start()
+        {
+            if (!isHubHatch)
+                _animator = GetComponentInChildren<Animator>();
+        }
 
         private void OnTriggerEnter(Collider other)
         {
@@ -29,8 +36,17 @@ namespace SGJ.SceneManagement
                 _isPlayerNear = true;
         }
 
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag("Player"))
+                _isPlayerNear = false;
+        }
+
         private void Update()
         {
+            if (!isHubHatch)
+                _animator.SetBool("IsOpened", _isPlayerNear);
+
             if (_isPlayerNear)
                 if (Input.GetKeyDown(KeyCode.E))
                     OnHatchWasChosen();

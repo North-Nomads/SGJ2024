@@ -1,9 +1,7 @@
 ﻿using SGJ.Mobs;
 using SGJ.Player;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -58,8 +56,8 @@ namespace SGJ.SceneManagement
             void SpawnHatches()
             {
                 var spawnPosition = GameObject.FindGameObjectWithTag(HatchSpawnPointTag).transform;
-                var allHatchesCombos = Resources.LoadAll(PathToHatch);
-                var hatchesGroup = Instantiate(allHatchesCombos[Random.Range(0, allHatchesCombos.Length)], spawnPosition);
+                var allHatchesCombos = Resources.LoadAll<GameObject>(PathToHatch);
+                var hatchesGroup = Instantiate(allHatchesCombos[Random.Range(1, allHatchesCombos.Length)], spawnPosition);
                 var hatches = hatchesGroup.GetComponentsInChildren<NextLevelHatch>();
 
                 foreach (var hatch in hatches)
