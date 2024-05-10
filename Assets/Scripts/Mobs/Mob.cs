@@ -1,5 +1,6 @@
 using Assets.Scripts.Mobs;
 using SGJ.Combat;
+using SGJ.GameItems;
 using SGJ.Player;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,7 @@ namespace SGJ.Mobs
         public MobCombat MobCombat { get;  protected set; }
         public MobState CurrentState { get; protected set; }
         public float DefaultSpeed => defaultSpeed;
+        public MobDropper MobDropper => _mobDropper;
 
         public void SetMobParameters(PlayerController player, MobSpawner owner)
         {
@@ -96,10 +98,9 @@ namespace SGJ.Mobs
     [Serializable]
     public class Probabilities
     {
-        [SerializeField] private Items item;
         [SerializeField, Range(0, 1)] private float dropChance;
-
-        public Items Item => item;
+        [SerializeField] private ItemModel model;
+        public ItemModel ItemModel => model;
         public float DropChance 
         {
             get => dropChance;

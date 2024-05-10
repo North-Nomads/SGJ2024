@@ -10,7 +10,6 @@ namespace SGJ.SceneManagement
 
         private void OnTriggerEnter(Collider other)
         {
-            print(other.tag);
             if (other.CompareTag(PlayerTagName))
                 OpenNewScene(CombatSceneID);
         }

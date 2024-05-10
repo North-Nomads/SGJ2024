@@ -44,6 +44,7 @@ namespace SGJ.Mobs
 
         internal void HandleMobDeath(object sender, Mob deadMob)
         {
+            deadMob.MobDropper.TryDropItem();
             Object.Destroy(deadMob.gameObject);
             _mobToKillLeft--;
             if (_mobToKillLeft == 0)

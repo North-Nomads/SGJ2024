@@ -1,21 +1,14 @@
-﻿using System;
+﻿using SGJ.GameItems;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace SGJ.Player
 {
-    public enum Items
-    {
-        Sonar,
-        LifeAnalizer,
-        Grenade,
-        Dynamite
-    }
-
     public class PlayerInventory : MonoBehaviour
     {
-        private Dictionary<Items, int> _inventory = new Dictionary<Items, int>();
+        private readonly Dictionary<Items, int> _inventory = new();
 
         private void Start()
         {
