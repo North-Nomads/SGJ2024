@@ -1,52 +1,81 @@
+using SGJ.Combat;
 using UnityEngine;
 using UnityEngine.Pool;
 
-//yeah, that's a Controller all-in-one script. Cry about it
-public class PlayerController : MonoBehaviour
+namespace SGJ.Player
 {
-    [Header("Player Stats")]
-    [SerializeField] private float playerSpeed;
-    [Header("GunStats")]
-    [SerializeField] private float bulletSpeed;
-    [SerializeField] private float bulletSpread;
-    [SerializeField] private float initalFireDelay;
-    [SerializeField] private float finalFireDelay;
-    [SerializeField] private float timeToRampUp;
-    [SerializeField] private float ammo;
-    [Header("References")]
-    [SerializeField] Transform gunPoint;
-    [SerializeField] private Camera playerCamera;
-    [SerializeField] private Bullet bulletPrefab;
-
-    private ObjectPool<Bullet> _bulletPool;
-    private Vector3 _cursorPostion;
-    private Vector3 _aimDirection;
-    private CharacterController _characterController;
-    private float _shotCoolDown;
-    private float _timeShooting;
-
-
-    private void Start()
+    //yeah, that's a Controller all-in-one script. Cry about it
+    [RequireComponent(typeof(PlayerUI))]
+    public class PlayerController : MonoBehaviour, IHittable
     {
-        _characterController = GetComponent<CharacterController>();
-        _bulletPool = new(SpawnBullet, OnGetBullet, OnReleaseBullet, OnDestroyBullet, true, 30, 70);
-    }
+        [Header("Player Stats")]
+        [SerializeField] private float playerSpeed;
+        [SerializeField] private float playerHealth;
 
-    
-    private void Update()
-    {
-        Look();
-        Move();
-        Shoot();
-    }
+        [Header("GunStats")]
+        [SerializeField] private float bulletSpeed;
+        [SerializeField] private float bulletSpread;
+        [SerializeField] private float initalFireDelay;
+        [SerializeField] private float finalFireDelay;
+        [SerializeField] private float timeToRampUp;
+        [SerializeField] private float ammo;
+        [Header("References")]
+        [SerializeField] Transform gunPoint;
+        [SerializeField] private Bullet bulletPrefab;
 
-    private void Look()
-    {
-        Physics.Raycast(playerCamera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit);
-        _cursorPostion = hit.point;
-        transform.LookAt(new Vector3(_cursorPostion.x, transform.position.y, _cursorPostion.z));
-        _aimDirection = (new Vector3(_cursorPostion.x, transform.position.y, _cursorPostion.z) - transform.position).normalized;
-    }
+        private float _currentPlayerHealth;
+        
+
+        private CharacterController _characterController;
+        private ObjectPool<Bullet> _bulletPool;
+        private Vector3 _cursorPostion;
+        private Vector3 _aimDirection;
+        private float _shotCoolDown;
+        private float _timeShooting;
+        private Camera _playerCamera;
+        private PlayerUI _playerUI;
+
+        private bool IsPlayerAlive => CurrentPlayerHealth > 0;
+        public System.EventHandler<PlayerController> OnPlayerDied = delegate { };
+
+        public float CurrentPlayerHealth
+        {
+            get => _currentPlayerHealth;
+            private set
+            {
+                _currentPlayerHealth = value;
+                _playerUI.OnPlayerHealthChanged(this, _currentPlayerHealth / playerHealth);
+                if (!IsPlayerAlive)
+                    OnPlayerDied(this, this);
+            }
+        }
+
+        private void Start()
+        {
+            _characterController = GetComponent<CharacterController>();
+            _bulletPool = new(SpawnBullet, OnGetBullet, OnReleaseBullet, OnDestroyBullet, true, 30, 70);
+            _playerCamera = Camera.main;
+            _playerUI = GetComponent<PlayerUI>();
+            CurrentPlayerHealth = playerHealth;
+        }
+
+        private void Update()
+        {
+            if (!IsPlayerAlive)
+                return;
+
+            Look();
+            Move();
+            Shoot();
+        }
+
+        private void Look()
+        {
+            Physics.Raycast(_playerCamera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit);
+            _cursorPostion = hit.point;
+            transform.LookAt(new Vector3(_cursorPostion.x, transform.position.y, _cursorPostion.z));
+            _aimDirection = (new Vector3(_cursorPostion.x, transform.position.y, _cursorPostion.z) - transform.position).normalized;
+        }
 
     private void Move()
     {
@@ -72,31 +101,39 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    private Bullet SpawnBullet()
-    {
-        Vector3 speed = _aimDirection * bulletSpeed + Vector3.Cross(_aimDirection, Vector3.up).normalized * Random.Range(-bulletSpread, bulletSpread);
-        Bullet bullet = Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(speed, Vector3.up));
-        bullet.Pool = _bulletPool;
-        bullet.Speed = speed;
-        return bullet;
+        private Bullet SpawnBullet()
+        {
+            Vector3 speed = _aimDirection * bulletSpeed + Vector3.Cross(_aimDirection, Vector3.up).normalized * Random.Range(-bulletSpread, bulletSpread);
+            Bullet bullet = Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(speed, Vector3.up));
+            bullet.Pool = _bulletPool;
+            bullet.Speed = speed;
+            return bullet;
+        }
+
+        private void OnGetBullet(Bullet bullet)
+        {
+            Vector3 speed = _aimDirection * bulletSpeed + Vector3.Cross(_aimDirection, Vector3.up).normalized * Random.Range(-bulletSpread, bulletSpread);
+            bullet.transform.SetPositionAndRotation(gunPoint.position, Quaternion.LookRotation(speed, Vector3.up));
+            bullet.Pool = _bulletPool;
+            bullet.Speed = speed;
+            bullet.gameObject.SetActive(true);
+        }
+
+        private void OnReleaseBullet(Bullet bullet)
+        {
+            bullet.gameObject.SetActive(false);
+        }
+
+        private void OnDestroyBullet(Bullet bullet)
+        {
+            Destroy(bullet.gameObject);
+        }
+
+        public void OnEntityGotHit(float incomeDamage)
+        {
+            CurrentPlayerHealth -= incomeDamage;
+            print($"Player health: {playerHealth}");
+        }
     }
 
-    private void OnGetBullet(Bullet bullet)
-    {
-        Vector3 speed = _aimDirection * bulletSpeed + Vector3.Cross(_aimDirection, Vector3.up).normalized * Random.Range(-bulletSpread, bulletSpread);
-        bullet.transform.SetPositionAndRotation(gunPoint.position, Quaternion.LookRotation(speed, Vector3.up));
-        bullet.Pool = _bulletPool;
-        bullet.Speed = speed;
-        bullet.gameObject.SetActive(true);
-    }
-
-    private void OnReleaseBullet(Bullet bullet)
-    {
-        bullet.gameObject.SetActive(false);
-    }
-
-    private void OnDestroyBullet(Bullet bullet)
-    {
-        Destroy(bullet.gameObject);
-    }
 }
