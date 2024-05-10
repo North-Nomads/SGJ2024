@@ -1,4 +1,6 @@
 using SGJ.Combat;
+using SGJ.GameItems;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -18,11 +20,14 @@ namespace SGJ.Player
         [SerializeField] private float initalFireDelay;
         [SerializeField] private float finalFireDelay;
         [SerializeField] private float timeToRampUp;
-        [SerializeField] private float ammo;
+        [SerializeField] private int defaultAmmo;
+
         [Header("References")]
         [SerializeField] Transform gunPoint;
         [SerializeField] private Bullet bulletPrefab;
 
+
+        private PlayerInventory _playerInventory;
         private float _currentPlayerHealth;
         private CharacterController _characterController;
         private ObjectPool<Bullet> _bulletPool;
@@ -32,6 +37,11 @@ namespace SGJ.Player
         private float _timeShooting;
         private Camera _playerCamera;
         private PlayerUI _playerUI;
+
+        public float DefaultHealth => playerHealth;
+        public int DefaultAmmo => defaultAmmo;
+        public int AmmoLeft => _playerInventory.Ammo;
+        public Dictionary<Items, int> Inventory => _playerInventory.Inventory;
 
         private bool IsPlayerAlive => CurrentPlayerHealth > 0;
         public System.EventHandler<PlayerController> OnPlayerDied = delegate { };
@@ -54,6 +64,8 @@ namespace SGJ.Player
             _bulletPool = new(SpawnBullet, OnGetBullet, OnReleaseBullet, OnDestroyBullet, true, 30, 70);
             _playerCamera = Camera.main;
             _playerUI = GetComponent<PlayerUI>();
+
+            _playerInventory = new PlayerInventory();
             CurrentPlayerHealth = playerHealth;
         }
 
@@ -83,12 +95,12 @@ namespace SGJ.Player
     private void Shoot()
     {
         _shotCoolDown -= Time.deltaTime;
-        if (_shotCoolDown > 0 || ammo <= 0)
+        if (_shotCoolDown > 0 || AmmoLeft <= 0)
             return;
         if(Input.GetMouseButton(0))
         {
             _bulletPool.Get();
-            ammo--;
+            _playerInventory.Inventory[Items.Ammo]--;
             _timeShooting += Mathf.Lerp(initalFireDelay, finalFireDelay,
                 Mathf.Clamp01(_timeShooting / timeToRampUp)); ;
             _shotCoolDown = Mathf.Lerp(initalFireDelay, finalFireDelay,
@@ -127,11 +139,6 @@ namespace SGJ.Player
             Destroy(bullet.gameObject);
         }
 
-        public void OnEntityGotHit(float incomeDamage)
-        {
-            CurrentPlayerHealth -= incomeDamage;
-            print($"Player health: {playerHealth}");
-        }
+        public void OnEntityGotHit(float incomeDamage) => CurrentPlayerHealth -= incomeDamage;
     }
-
 }
