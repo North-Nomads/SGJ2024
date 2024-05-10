@@ -1,6 +1,7 @@
 ﻿using SGJ.Player;
 using SGJ.SceneManagement;
 using System.Collections;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 namespace SGJ.Mobs
@@ -34,14 +35,13 @@ namespace SGJ.Mobs
             deadMob.MobDropper.TryDropItem();
             Object.Destroy(deadMob.gameObject);
             _mobToKillLeft--;
-            Debug.Log($"Mob died. {_mobToKillLeft} left");
+            Debug.Log($"{_mobToKillLeft} left");
             if (_mobToKillLeft == 0)
                 _goalObserver.HandleWaveCleaned();
         }
 
         internal void TriggerNewWaveAfterDelay(float delayBetweenWaves)
         {
-            Debug.Log("Preparing new wave...");
             _goalObserver.StartCoroutine(StartNewWaveAfterDelay());
 
             IEnumerator StartNewWaveAfterDelay()
@@ -54,7 +54,6 @@ namespace SGJ.Mobs
             {
                 for (int i = 0; i < MobsPerWave; i++)
                 {
-                    Debug.Log($"Spawning {i} mob");
                     var instance = Object.Instantiate(GetRandomMob, GetRandomSpawnPoint);
                     instance.SetMobParameters(_player, this);
                 }

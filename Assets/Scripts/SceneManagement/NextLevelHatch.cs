@@ -1,4 +1,6 @@
 ﻿using SGJ.Player;
+using System;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace SGJ.SceneManagement
@@ -17,6 +19,9 @@ namespace SGJ.SceneManagement
         private bool _isPlayerNear;
 
         [SerializeField] private LevelDifficulty difficulty;
+        [SerializeField] private bool isHubHatch;
+
+        public EventHandler<LevelDifficulty> OnHatchTriggered = delegate { };
 
         private void OnTriggerEnter(Collider other)
         {
@@ -31,9 +36,12 @@ namespace SGJ.SceneManagement
                     OnHatchWasChosen();
         }
 
-        public void OnHatchWasChosen()
+        private void OnHatchWasChosen()
         {
-            PlayerSaveController.UpcomingDifficulty = difficulty;
+            OnHatchTriggered(gameObject, difficulty);
+            if (!isHubHatch)
+                return;
+
             PlayerSaveController.ResetPlayerProgress();
             PlayerSaveController.LaunchNewMission();
             SceneController.LoadScene(CombatSceneID);

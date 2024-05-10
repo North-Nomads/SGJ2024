@@ -34,7 +34,7 @@ Transform:
   - {fileID: 4893042623019962573}
   - {fileID: 6518423791132579389}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &2255446321561863803
 CharacterController:
@@ -75,7 +75,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSpeed: 5
-  playerHealth: 100
   bulletSpeed: 15
   bulletSpread: 5
   initalFireDelay: 0.3
@@ -143,7 +142,7 @@ GameObject:
   - component: {fileID: 4893042623019962573}
   - component: {fileID: 7134954140162669369}
   - component: {fileID: 4813168352123950315}
-  - component: {fileID: 828862832486670140}
+  - component: {fileID: 268509029924618285}
   m_Layer: 0
   m_Name: Model
   m_TagString: Untagged
@@ -217,8 +216,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &828862832486670140
-SphereCollider:
+--- !u!65 &268509029924618285
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -236,7 +235,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3020762803322414180
 GameObject:

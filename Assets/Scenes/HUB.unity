@@ -657,10 +657,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c817917245984e45849aa4c0d55c8bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wavesQuantity: 0
-  delayBetweenWaves: 0
-  isPeacefulLocation: 1
   delayBeforeReturnToHub: 3
+  delayBetweenWaves: 0
+  isHubLocation: 1
 --- !u!4 &728240840
 Transform:
   m_ObjectHideFlags: 0
@@ -1530,6 +1529,11 @@ PrefabInstance:
         type: 3}
       propertyPath: difficulty
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3021547982795182016, guid: f067927687de36e4e98adfdb5a73a64d,
+        type: 3}
+      propertyPath: isHubHatch
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3091423482224337438, guid: f067927687de36e4e98adfdb5a73a64d,
         type: 3}

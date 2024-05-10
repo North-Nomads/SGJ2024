@@ -30,7 +30,7 @@ namespace SGJ.Player
             set
             {
                 if (value <= 0 || value > _currentRunMissionsAmount)
-                    throw new Exception($"Trying to set mission index less or equals 0 or higher than total missions. Must be in [1, {_currentRunMissionsAmount}");
+                    throw new Exception($"Trying to set mission index less or equals 0 or higher than total missions. Must be in [1, {_currentRunMissionsAmount}]. Given: {value}");
                 _currentMissionIndex = value;
             }
         }
