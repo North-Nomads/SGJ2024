@@ -69,6 +69,7 @@ namespace SGJ.SceneManagement
 
         private void HandlePlayerLose(object sender, PlayerController player)
         {
+            PlayerSaveController.ResetPlayerProgress();
             StartCoroutine(ReturnToHubAfterDelay());
 
             IEnumerator ReturnToHubAfterDelay()
@@ -106,6 +107,7 @@ namespace SGJ.SceneManagement
         {
             if (_currentWaveIndex == mobsInWaves.Length - 1)
             {
+                PlayerSaveController.SavePlayerProgress(_player.CurrentPlayerHealth, _player.Inventory);
                 HandleLevelGoalAchieved();
                 print("Goal achieved. Level ended");
                 return;

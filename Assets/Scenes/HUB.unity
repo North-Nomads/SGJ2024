@@ -898,6 +898,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0f77f16d1dc68b488403980e3111cb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shouldRestartProgress: 1
 --- !u!1 &1004154471
 GameObject:
   m_ObjectHideFlags: 0
