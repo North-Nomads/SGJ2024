@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace SGJ.Mobs
 {
@@ -9,6 +10,7 @@ namespace SGJ.Mobs
         private Mob _thisMob;
 
         public EventHandler<Mob> OnMobDied = delegate { };
+        public EventHandler OnMobHit;
 
         public float CurrentHealth
         {
@@ -44,6 +46,7 @@ namespace SGJ.Mobs
         public void HandleIncomeDamage(float incomeDamage)
         {
             CurrentHealth -= incomeDamage;
+            OnMobHit.Invoke(this, null);
         }
     }
 }

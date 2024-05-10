@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 5601560878413408608}
   - component: {fileID: 6038207931511390096}
   - component: {fileID: 1776484590590539869}
-  m_Layer: 0
+  - component: {fileID: 4880622883216808274}
+  - component: {fileID: -9178325541783349730}
+  m_Layer: 7
   m_Name: Barrel_2_verylow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 626536119447840521}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.22585069, y: 0, z: -0.9971625}
   m_LocalScale: {x: 0.68084675, y: 0.68084675, z: 0.68084675}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &6038207931511390096
 MeshFilter:
@@ -61,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8846583367169497377, guid: 6e236c4d67a79404891ca2cea0e15929, type: 3}
+  - {fileID: 2100000, guid: f94ad2ab07642ee488d7e71cb3acf270, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -83,3 +85,43 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &4880622883216808274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 626536119447840521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a105bf42dfeee774db58f0458c123b5f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  drop:
+  - {fileID: 3362668755219991468, guid: 673cf888e07fd3d4f9faa906b06a2e1c, type: 3}
+  - {fileID: 3362668755219991468, guid: 2687009b53a13d8408281dfae0f6c4c7, type: 3}
+  timeToBonk: 0.3
+  health: 40
+--- !u!136 &-9178325541783349730
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 626536119447840521}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.7254032
+  m_Height: 1.8355573
+  m_Direction: 1
+  m_Center: {x: 0.3317202, y: 0.9177788, z: -0.00000011920929}

@@ -8,12 +8,6 @@
         },
         {
             "m_Id": "1e4cb975faa94bc99702c4559d7bad5f"
-        },
-        {
-            "m_Id": "df4746b9976a4a4fbcd3fcff69b358b9"
-        },
-        {
-            "m_Id": "c25b2cf0be9e405abd77f5fe90e97859"
         }
     ],
     "m_Keywords": [],
@@ -552,10 +546,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -856.0,
-            "y": 453.0000305175781,
+            "x": -962.0000610351563,
+            "y": 412.0,
             "width": 126.0,
-            "height": 76.99996948242188
+            "height": 77.00003051757813
         }
     },
     "m_Slots": [
@@ -759,12 +753,6 @@
         },
         {
             "m_Id": "1e4cb975faa94bc99702c4559d7bad5f"
-        },
-        {
-            "m_Id": "df4746b9976a4a4fbcd3fcff69b358b9"
-        },
-        {
-            "m_Id": "c25b2cf0be9e405abd77f5fe90e97859"
         }
     ]
 }
@@ -781,10 +769,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -467.9999694824219,
-            "y": 487.0000305175781,
-            "width": 207.99996948242188,
-            "height": 326.0000305175781
+            "x": -585.0,
+            "y": 301.0,
+            "width": 139.99996948242188,
+            "height": 142.0
         }
     },
     "m_Slots": [
@@ -805,7 +793,7 @@
         "limit"
     ],
     "m_Precision": 0,
-    "m_PreviewExpanded": true,
+    "m_PreviewExpanded": false,
     "m_DismissedVersion": 0,
     "m_PreviewMode": 0,
     "m_CustomColors": {
@@ -873,10 +861,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -874.0,
-            "y": 314.9999694824219,
+            "x": -980.0,
+            "y": 274.0000305175781,
             "width": 145.0,
-            "height": 129.00003051757813
+            "height": 129.0
         }
     },
     "m_Slots": [
@@ -950,10 +938,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -692.0,
-            "y": 317.0,
-            "width": 208.00003051757813,
-            "height": 302.0
+            "x": -783.0000610351563,
+            "y": 298.0,
+            "width": 128.00006103515626,
+            "height": 118.00003051757813
         }
     },
     "m_Slots": [
@@ -969,7 +957,7 @@
     ],
     "synonyms": [],
     "m_Precision": 0,
-    "m_PreviewExpanded": true,
+    "m_PreviewExpanded": false,
     "m_DismissedVersion": 0,
     "m_PreviewMode": 0,
     "m_CustomColors": {
@@ -1268,34 +1256,6 @@
 }
 
 {
-    "m_SGVersion": 1,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
-    "m_ObjectId": "c25b2cf0be9e405abd77f5fe90e97859",
-    "m_Guid": {
-        "m_GuidSerialized": "14a031e0-b92c-4009-800f-3464a5d1b6c4"
-    },
-    "m_Name": "A",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "A",
-    "m_DefaultReferenceName": "_A",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_DismissedVersion": 0,
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_Value": 0.0,
-    "m_FloatType": 1,
-    "m_RangeValues": {
-        "x": 0.0,
-        "y": 1.0
-    }
-}
-
-{
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
     "m_ObjectId": "de64e72dff0e47bbbe6a57b481969506",
@@ -1316,34 +1276,6 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
-}
-
-{
-    "m_SGVersion": 1,
-    "m_Type": "UnityEditor.ShaderGraph.Internal.Vector1ShaderProperty",
-    "m_ObjectId": "df4746b9976a4a4fbcd3fcff69b358b9",
-    "m_Guid": {
-        "m_GuidSerialized": "f0844aa9-741a-4648-bb49-f73bc6c373d2"
-    },
-    "m_Name": "LifeTime",
-    "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "LifeTime",
-    "m_DefaultReferenceName": "_LifeTime",
-    "m_OverrideReferenceName": "",
-    "m_GeneratePropertyBlock": true,
-    "m_UseCustomSlotLabel": false,
-    "m_CustomSlotLabel": "",
-    "m_DismissedVersion": 0,
-    "m_Precision": 0,
-    "overrideHLSLDeclaration": false,
-    "hlslDeclarationOverride": 0,
-    "m_Hidden": false,
-    "m_Value": 0.0,
-    "m_FloatType": 0,
-    "m_RangeValues": {
-        "x": 0.0,
-        "y": 1.0
     }
 }
 

@@ -3,6 +3,7 @@ using SGJ.GameItems;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Pool;
 using Random = UnityEngine.Random;
 
@@ -17,10 +18,12 @@ namespace SGJ.Player
 
         [Header("GunStats")]
         [SerializeField] private float bulletSpeed;
-        [SerializeField] private float bulletSpread;
+        [SerializeField] private float initialBulletSpread;
+        [SerializeField] private float finalBulletSpread;
         [SerializeField] private float initalFireDelay;
         [SerializeField] private float finalFireDelay;
         [SerializeField] private float timeToRampUp;
+        [SerializeField] private float timeToIncreaseAccuracy;
         [SerializeField] private float ammo;
         [SerializeField]private float flashTickDuration;
         [Header("References")]
@@ -39,6 +42,7 @@ namespace SGJ.Player
         private PlayerUI _playerUI;
         private CameraManager _cameraManager;
         private Light _muzzleFlash;
+        private Light _spotLight;
         private float _flashTickGlowTimeLeft;
 
         public int AmmoLeft => _playerInventory.Ammo;
@@ -73,6 +77,7 @@ namespace SGJ.Player
 
             _cameraManager = _playerCamera.gameObject.GetComponent<CameraManager>();
             _muzzleFlash = gunPoint.GetChild(0).GetComponent<Light>();
+            _spotLight = gunPoint.GetChild(1).GetComponent<Light>();
         }
 
         private void Update()
@@ -101,6 +106,9 @@ namespace SGJ.Player
         }
         private void Shoot()
         {
+            _spotLight.spotAngle = (180 / Mathf.PI) * 4 * 
+                Mathf.Atan(Mathf.Lerp(initialBulletSpread, finalBulletSpread, _timeShooting / timeToIncreaseAccuracy) / bulletSpeed);
+            _spotLight.innerSpotAngle = _spotLight.spotAngle / 2;
             _shotCoolDown -= Time.deltaTime;
             _flashTickGlowTimeLeft -= Time.deltaTime;
             if (_flashTickGlowTimeLeft > 0)
@@ -112,7 +120,7 @@ namespace SGJ.Player
                 return;
             if(!Input.GetMouseButton(0))
             {
-                _timeShooting = 0;
+                _timeShooting = _timeShooting > 0 ? _timeShooting - 2 * Time.deltaTime : 0;
                 return;
             }
             
@@ -123,25 +131,27 @@ namespace SGJ.Player
             _shotCoolDown = Mathf.Lerp(initalFireDelay, finalFireDelay,
                 Mathf.Clamp01(_timeShooting / timeToRampUp));
             _cameraManager.ShakeCamera(Random.onUnitSphere * 0.1f);
+            _flashTickGlowTimeLeft = flashTickDuration;
+            
         }
 
         private Bullet SpawnBullet()
         {
+            float bulletSpread = Mathf.Lerp(initialBulletSpread, finalBulletSpread, _timeShooting / timeToIncreaseAccuracy);
             Vector3 speed = _aimDirection * bulletSpeed + Vector3.Cross(_aimDirection, Vector3.up).normalized * Random.Range(-bulletSpread, bulletSpread);
             Bullet bullet = Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(speed, Vector3.up));
             bullet.Pool = _bulletPool;
-            _flashTickGlowTimeLeft = flashTickDuration;
             bullet.Speed = speed;
             return bullet;
         }
 
         private void OnGetBullet(Bullet bullet)
         {
+            float bulletSpread = Mathf.Lerp(initialBulletSpread, finalBulletSpread, _timeShooting / timeToIncreaseAccuracy);
             Vector3 speed = _aimDirection * bulletSpeed + Vector3.Cross(_aimDirection, Vector3.up).normalized * Random.Range(-bulletSpread, bulletSpread);
             bullet.transform.SetPositionAndRotation(gunPoint.position, Quaternion.LookRotation(speed, Vector3.up));
             bullet.Pool = _bulletPool;
             bullet.Speed = speed;
-            _flashTickGlowTimeLeft = flashTickDuration;
             bullet.gameObject.SetActive(true);
         }
 
