@@ -24,4 +24,8 @@ public class CameraManager : MonoBehaviour
     {
         _impulseSource.GenerateImpulse();
     }
+    public void ShakeCamera(Vector3 force)
+    {
+        _impulseSource.GenerateImpulse(force);
+    }
 }
