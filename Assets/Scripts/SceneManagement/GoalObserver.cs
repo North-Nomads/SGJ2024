@@ -1,10 +1,8 @@
 ﻿using Cinemachine;
 using SGJ.Mobs;
 using System;
-using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Collections;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace SGJ.SceneManagement
 {
@@ -13,6 +11,8 @@ namespace SGJ.SceneManagement
         [SerializeField] private int wavesQuantity;
         [SerializeField] private int[] mobsInWaves;
         [SerializeField] private float delayBetweenWaves;
+        [SerializeField] private bool isPeacefulLocation;
+        [SerializeField] private float delayBeforeReturnToHub = 3f;
 
         private const string MobSpawnPoint = "MobSpawnPoint";
         private const string PlayerSpawnPoint = "PlayerSpawnPoint";
@@ -39,6 +39,10 @@ namespace SGJ.SceneManagement
 
             InstantiatePlayer();
             InstantiateCamera();
+            
+            if (isPeacefulLocation)
+                return;
+
             InstantiateMobs();
             LaunchWavesLoop();
         }
@@ -59,6 +63,18 @@ namespace SGJ.SceneManagement
             if (playerSpawnPoint == null)
                 throw new Exception($"No player spawn point found. Assign spawn point object corresponding Tag: {PlayerSpawnPoint}");
             _player = Instantiate(player, playerSpawnPoint.transform.position, Quaternion.identity);
+            _player.OnPlayerDied += HandlePlayerLose;
+        }
+
+        private void HandlePlayerLose(object sender, PlayerController player)
+        {
+            StartCoroutine(ReturnToHubAfterDelay());
+
+            IEnumerator ReturnToHubAfterDelay()
+            {
+                yield return new WaitForSeconds(delayBeforeReturnToHub);
+                SceneController.LoadScene(0);
+            }
         }
 
         private void InstantiateCamera()
@@ -82,7 +98,7 @@ namespace SGJ.SceneManagement
 
         private void HandleLevelGoalAchieved()
         {
-            throw new NotImplementedException();
+            SceneController.LoadScene(0);
         }
 
         public void HandleWaveCleaned()

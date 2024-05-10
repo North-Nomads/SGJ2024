@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviour, IHittable
     private float _timeShooting;
     private Camera _playerCamera;
 
+    private bool IsPlayerAlive => playerHealth > 0;
+    public System.EventHandler<PlayerController> OnPlayerDied = delegate { };
 
     private void Start()
     {
@@ -34,9 +36,11 @@ public class PlayerController : MonoBehaviour, IHittable
         _playerCamera = Camera.main;
     }
 
-    
     private void Update()
     {
+        if (!IsPlayerAlive)
+            return;
+
         Look();
         Move();
         Shoot();
@@ -105,14 +109,7 @@ public class PlayerController : MonoBehaviour, IHittable
     {
         playerHealth -= incomeDamage;
         print($"Player health: {playerHealth}");
-        if (playerHealth < 0)
-            Die();
+        if (!IsPlayerAlive)
+            OnPlayerDied(this, this);
     }
-
-    private void Die()
-    {
-        Destroy(gameObject);
-    }
-
-    
 }
