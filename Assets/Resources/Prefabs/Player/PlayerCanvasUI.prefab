@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7817928958677021186
 RectTransform:
   m_ObjectHideFlags: 0
@@ -351,6 +351,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthBarFiller: {fileID: 8970347723164398398}
   ammoCapacityText: {fileID: 6482549814309867944}
+  hatchPanel: {fileID: 7817928958677021186}
+  hatchDescriptionText: {fileID: 760913776554803803}
 --- !u!1 &5062295637006854688
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,7 +445,7 @@ GameObject:
   - component: {fileID: 259831928969463371}
   - component: {fileID: 760913776554803803}
   m_Layer: 5
-  m_Name: Text (Legacy) (2)
+  m_Name: Description
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
