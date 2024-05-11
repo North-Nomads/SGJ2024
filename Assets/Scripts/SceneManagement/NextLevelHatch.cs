@@ -17,6 +17,7 @@ namespace SGJ.SceneManagement
     {
         private const int CombatSceneID = 1;
         public const string HatchUICanvasPath = "Prefabs/Props/Hatches/Canvas";
+        public const string HubHatchUICanvasPath = "Prefabs/Props/Hatches/HubCanvas";
 
         private LevelDifficulty _difficulty;
         [SerializeField] private bool isHubHatch;
@@ -33,9 +34,17 @@ namespace SGJ.SceneManagement
                 _animator = GetComponentInChildren<Animator>();
 
             Array values = Enum.GetValues(typeof(LevelDifficulty));
-            _difficulty = (LevelDifficulty)values.GetValue(Random.Range(0, values.Length));
+            var startIndex = 0;
+            if (PlayerSaveController.IsCurrentMissionLastOne)
+                startIndex = 1;
+
+            _difficulty = (LevelDifficulty)values.GetValue(Random.Range(startIndex, values.Length));
 
             var uiPrefab = Resources.Load<Canvas>(HatchUICanvasPath);
+            if (isHubHatch)
+                uiPrefab = Resources.Load<Canvas>(HubHatchUICanvasPath);
+
+
             _ui = Instantiate(uiPrefab);
             _ui.gameObject.SetActive(false);
         }
@@ -45,8 +54,6 @@ namespace SGJ.SceneManagement
             if (other.CompareTag("Player"))
             {
                 _isPlayerNear = true;
-                if (isHubHatch)
-                    return;
                 _ui.gameObject.SetActive(true);
             }
         }
@@ -56,8 +63,6 @@ namespace SGJ.SceneManagement
             if (other.CompareTag("Player"))
             {
                 _isPlayerNear = false;
-                if (isHubHatch)
-                    return;
                 _ui.gameObject.SetActive(false);
             }
         }
