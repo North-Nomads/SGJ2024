@@ -118,7 +118,8 @@ namespace SGJ.SceneManagement
                 PlayerSaveController.SavePlayerProgress(_player.CurrentPlayerHealth, _player.PlayerInventory);
                 _isLevelCleared = true;
                 PlayerSaveController.IsLocationFinished = true;
-                SpawnHatches();
+                if (PlayerSaveController.IsCurrentMissionLastOne)
+                    SpawnHatches();
                 return;
             }
 
