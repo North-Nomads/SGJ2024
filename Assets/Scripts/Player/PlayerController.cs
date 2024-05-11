@@ -25,9 +25,11 @@ namespace SGJ.Player
         [SerializeField] private float timeToIncreaseAccuracy;
         [SerializeField] private float ammo;
         [SerializeField]private float flashTickDuration;
+
         [Header("References")]
         [SerializeField] Transform gunPoint;
         [SerializeField] private Bullet bulletPrefab;
+        [SerializeField] private Animator gunAnimator;
 
         private PlayerInventory _playerInventory;
         private float _currentPlayerHealth;
@@ -132,6 +134,9 @@ namespace SGJ.Player
 
             if (_shotCoolDown > 0 || AmmoLeft <= 0)
                 return;
+
+            gunAnimator.SetBool("IsFiring", Input.GetMouseButton(0));
+
             if(!Input.GetMouseButton(0))
             {
                 _timeShooting = _timeShooting > 0 ? _timeShooting - 2 * Time.deltaTime : 0;
