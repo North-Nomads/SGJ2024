@@ -1,9 +1,11 @@
 using SGJ.Combat;
+using SGJ.Mobs;
 using UnityEngine;
 
 public class DestroyableContainer : MonoBehaviour, IHittable
 {
-    [SerializeField] private GameObject[] drop;
+    [SerializeField] private float generalDropChance;
+    [SerializeField] private Probabilities[] dropChances;
     [Header("Animation")]
     [SerializeField] private float timeToBonk;
     [Header("Stats")]
@@ -21,8 +23,32 @@ public class DestroyableContainer : MonoBehaviour, IHittable
 
     private void Die()
     {
-        Instantiate(drop[UnityEngine.Random.Range(0, drop.Length)], transform.position, transform.rotation);
+        TryDropItem();
         Destroy(gameObject);
+    }
+
+    public void TryDropItem()
+    {
+        if (Random.Range(0f, 1f) > generalDropChance || dropChances is null || dropChances.Length == 0)
+            return;
+
+        var random = Random.Range(0f, 1f);
+        float bottomBorder = 0f;
+        float topBorder;
+        for (int i = 0; i < dropChances.Length; i++)
+        {
+            topBorder = dropChances[i].DropChance;
+
+            if (bottomBorder > random || random > topBorder)
+            {
+                bottomBorder = dropChances[i].DropChance;
+                continue;
+            }
+
+            var itemQuantity = Random.Range(dropChances[i].MinQuantity, dropChances[i].MaxQuantity + 1);
+            Instantiate(dropChances[i].ItemModel.Prefab, transform.position, transform.rotation, null)
+                .OnObjectCreated(dropChances[i].ItemModel.Item, itemQuantity);
+        }
     }
 
     // Update is called once per frame
