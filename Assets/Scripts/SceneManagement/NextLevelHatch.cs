@@ -1,6 +1,5 @@
 ﻿using SGJ.Player;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace SGJ.SceneManagement
@@ -21,13 +20,9 @@ namespace SGJ.SceneManagement
         [SerializeField] private bool isHubHatch;
 
         private Animator _animator;
-        private string _analysisInfo;
-        private string _sonarInfo;
         private bool _isPlayerNear;
 
-        public string GetHatchInfo => $"Угроза: {_analysisInfo}\nАнализ форм жизней: {_sonarInfo}";
         public EventHandler<LevelDifficulty> OnHatchTriggered = delegate { };
-        
 
         private void Start()
         {
@@ -56,7 +51,6 @@ namespace SGJ.SceneManagement
             {
                 if (Input.GetKeyDown(KeyCode.E))
                     OnHatchWasChosen();
-
             }
         }
 
