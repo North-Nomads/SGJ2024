@@ -46,7 +46,7 @@ public class DestroyableContainer : MonoBehaviour, IHittable
             }
 
             var itemQuantity = Random.Range(dropChances[i].MinQuantity, dropChances[i].MaxQuantity + 1);
-            Instantiate(dropChances[i].ItemModel.Prefab, transform.position, transform.rotation, null)
+            Instantiate(dropChances[i].ItemModel.Prefab, transform.position + Vector3.up * 1.5f, transform.rotation, null)
                 .OnObjectCreated(dropChances[i].ItemModel.Item, itemQuantity);
         }
     }
@@ -56,6 +56,6 @@ public class DestroyableContainer : MonoBehaviour, IHittable
     {
         _timeSinceDamaged += Time.deltaTime;
         if (_timeSinceDamaged < timeToBonk)
-            gameObject.transform.localScale = Vector3.Lerp(Vector3.one, 1.1f * Vector3.one, 2 * (timeToBonk / 2 - _timeSinceDamaged) / timeToBonk);
+            gameObject.transform.localScale = Vector3.Lerp(Vector3.one, 0.9f * Vector3.one, 2 * (timeToBonk / 2 - _timeSinceDamaged) / timeToBonk);
     }
 }
