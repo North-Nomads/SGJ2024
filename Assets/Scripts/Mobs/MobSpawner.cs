@@ -1,7 +1,6 @@
 ﻿using SGJ.Player;
 using SGJ.SceneManagement;
 using System.Collections;
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 namespace SGJ.Mobs
@@ -9,7 +8,6 @@ namespace SGJ.Mobs
     public class MobSpawner
     {
         private const string MobsPath = "Prefabs/Mobs";
-        private const int MobsPerWave = 20;
 
         private readonly GoalObserver _goalObserver;
         private readonly GameObject[] _spawnPoints;
@@ -52,12 +50,12 @@ namespace SGJ.Mobs
 
             void StartNewWave()
             {
-                for (int i = 0; i < MobsPerWave; i++)
+                for (int i = 0; i < PlayerSaveController.MobsToSpawnThisWave; i++)
                 {
                     var instance = Object.Instantiate(GetRandomMob, GetRandomSpawnPoint);
                     instance.SetMobParameters(_player, this);
                 }
-                _mobToKillLeft = MobsPerWave;
+                _mobToKillLeft = PlayerSaveController.MobsToSpawnThisWave;
             }
         }
     }

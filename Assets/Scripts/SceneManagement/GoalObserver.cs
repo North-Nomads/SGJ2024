@@ -64,7 +64,6 @@ namespace SGJ.SceneManagement
             if (!_isLevelCleared)
                 return;
 
-            print($"Sender: {sender}: {e}");
             PlayerSaveController.UpcomingDifficulty = e;
 
             if (isHubLocation)
@@ -95,13 +94,11 @@ namespace SGJ.SceneManagement
         private void LaunchWavesLoop()
         {
             _currentWaveIndex++;
-            print($"Launching wave {_currentWaveIndex}/{_wavesThisMission}");
             _mobSpawner.TriggerNewWaveAfterDelay(delayBetweenWaves);
         }
 
         public void HandleWaveCleaned()
         {
-            print($"Wave {_currentWaveIndex} cleared of {_wavesThisMission}");
             if (_currentWaveIndex == _wavesThisMission)
             {
                 PlayerSaveController.SavePlayerProgress(_player.CurrentPlayerHealth, _player.PlayerInventory);
