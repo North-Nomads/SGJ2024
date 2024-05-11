@@ -30,6 +30,7 @@ namespace SGJ.SceneManagement
             _currentWaveIndex = 0;
             _wavesThisMission = (int)PlayerSaveController.UpcomingDifficulty;
             _player = _assetSpawner.Player;
+            PlayerSaveController.IsLocationFinished = _wavesThisMission == 0;
 
             var isMissionPeacful = PlayerSaveController.UpcomingDifficulty == LevelDifficulty.Peace;
 
@@ -69,6 +70,13 @@ namespace SGJ.SceneManagement
             if (isHubLocation)
                 return;
 
+            if (PlayerSaveController.IsCurrentMissionLastOne)
+            {
+                PlayerSaveController.ResetPlayerProgress();
+                StartCoroutine(ReturnToHubAfterDelay());
+                return;
+            }
+
             PlayerSaveController.CurrentMissionIndex++;
             SceneController.LoadScene(1);
         }
@@ -81,6 +89,7 @@ namespace SGJ.SceneManagement
 
         private IEnumerator ReturnToHubAfterDelay()
         {
+            PlayerSaveController.IsLocationFinished = false;
             yield return new WaitForSeconds(delayBeforeReturnToHub);
             SceneController.LoadScene(0);
         }
@@ -103,6 +112,7 @@ namespace SGJ.SceneManagement
             {
                 PlayerSaveController.SavePlayerProgress(_player.CurrentPlayerHealth, _player.PlayerInventory);
                 _isLevelCleared = true;
+                PlayerSaveController.IsLocationFinished = true;
                 return;
             }
 

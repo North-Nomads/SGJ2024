@@ -45,7 +45,7 @@ namespace SGJ.SceneManagement
         private void Update()
         {
             if (!isHubHatch)
-                _animator.SetBool("IsOpened", _isPlayerNear);
+                _animator.SetBool("IsOpened", _isPlayerNear && PlayerSaveController.IsLocationFinished);
 
             if (_isPlayerNear)
             {

@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5900263d80c8ca0468ca7a45c70ac632, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
+  difficulty: 2
   isHubHatch: 0
 --- !u!65 &2167029836240924884
 BoxCollider:

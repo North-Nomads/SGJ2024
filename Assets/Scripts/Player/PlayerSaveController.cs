@@ -24,6 +24,7 @@ namespace SGJ.Player
         private static float _savedPlayerHealth;
         private static Dictionary<Items, int> _inventory = new();
 
+
         private static readonly Dictionary<LevelDifficulty, int> _difficultyTotalMobs = new()
         {
             { LevelDifficulty.Peace, 0 },
@@ -40,6 +41,7 @@ namespace SGJ.Player
             { LevelDifficulty.Hard, 6 },
         };
 
+        public static bool IsLocationFinished { get; set; } 
         public static int CurrentMissionIndex
         {
             get => _currentMissionIndex;
