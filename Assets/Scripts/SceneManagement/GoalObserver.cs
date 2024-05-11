@@ -12,6 +12,7 @@ namespace SGJ.SceneManagement
         private const string MobSpawnPointTag = "MobSpawnPoint";
         private const string PathToHatch = "Prefabs/Props/Hatches/Hatch";
         private const string HatchSpawnPointTag = "HatchSpawnPoint";
+        private const string PathToHubCapsule = "Prefabs/Props/End Capsule";
         [SerializeField] private float delayBeforeReturnToHub = 3f;
         [SerializeField] private float delayBetweenWaves;
         [SerializeField] private bool isHubLocation;
@@ -43,7 +44,8 @@ namespace SGJ.SceneManagement
                 return;
             }
 
-            SpawnHatches();
+            if (!PlayerSaveController.IsCurrentMissionLastOne)
+                SpawnHatches();
 
             if (isMissionPeacful)
                 return;
@@ -51,13 +53,17 @@ namespace SGJ.SceneManagement
             InstantiateMobs();
             LaunchWavesLoop();
 
-            void SpawnHatches()
-            {
-                var spawnPosition = GameObject.FindGameObjectWithTag(HatchSpawnPointTag).transform;
-                var hatchPrefab = Resources.Load<NextLevelHatch>(PathToHatch);
-                var hatchInstance = Instantiate(hatchPrefab, spawnPosition);
-                hatchInstance.OnHatchTriggered += HandleHatchWasChosen;
-            }
+        }
+        private void SpawnHatches()
+        {
+            var spawnPosition = GameObject.FindGameObjectWithTag(HatchSpawnPointTag).transform;
+            var hatchPrefab = Resources.Load<NextLevelHatch>(PathToHatch);
+            if (PlayerSaveController.IsCurrentMissionLastOne)
+                hatchPrefab = Resources.Load<NextLevelHatch>(PathToHubCapsule);
+
+
+            var hatchInstance = Instantiate(hatchPrefab, spawnPosition);
+            hatchInstance.OnHatchTriggered += HandleHatchWasChosen;
         }
 
         private void HandleHatchWasChosen(object sender, LevelDifficulty e)
@@ -72,7 +78,7 @@ namespace SGJ.SceneManagement
 
             if (PlayerSaveController.IsCurrentMissionLastOne)
             {
-                PlayerSaveController.ResetPlayerProgress();
+                PlayerSaveController.UpcomingDifficulty = LevelDifficulty.Peace;
                 StartCoroutine(ReturnToHubAfterDelay());
                 return;
             }
@@ -91,6 +97,7 @@ namespace SGJ.SceneManagement
         {
             PlayerSaveController.IsLocationFinished = false;
             yield return new WaitForSeconds(delayBeforeReturnToHub);
+            PlayerSaveController.ResetPlayerProgress();
             SceneController.LoadScene(0);
         }
 
@@ -113,6 +120,7 @@ namespace SGJ.SceneManagement
                 PlayerSaveController.SavePlayerProgress(_player.CurrentPlayerHealth, _player.PlayerInventory);
                 _isLevelCleared = true;
                 PlayerSaveController.IsLocationFinished = true;
+                SpawnHatches();
                 return;
             }
 

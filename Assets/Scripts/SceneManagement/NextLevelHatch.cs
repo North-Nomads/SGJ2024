@@ -1,6 +1,7 @@
 ﻿using SGJ.Player;
 using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace SGJ.SceneManagement
 {
@@ -28,6 +29,9 @@ namespace SGJ.SceneManagement
         {
             if (!isHubHatch)
                 _animator = GetComponentInChildren<Animator>();
+
+            Array values = Enum.GetValues(typeof(LevelDifficulty));
+            difficulty = (LevelDifficulty)values.GetValue(Random.Range(0, values.Length));
         }
 
         private void OnTriggerEnter(Collider other)
@@ -44,7 +48,7 @@ namespace SGJ.SceneManagement
 
         private void Update()
         {
-            if (!isHubHatch)
+            if (!isHubHatch && !gameObject.CompareTag("HubHatch"))
                 _animator.SetBool("IsOpened", _isPlayerNear && PlayerSaveController.IsLocationFinished);
 
             if (_isPlayerNear)
