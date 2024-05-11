@@ -95,7 +95,7 @@ namespace SGJ.Player
 
         private void HandleMedkitUsage()
         {
-            if (Input.GetKey(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F))
                 if (_playerInventory.Inventory[Items.Medkit] > 0)
                     UseMedKit();
 
