@@ -122,6 +122,8 @@ namespace SGJ.Player
         }
         private void Shoot()
         {
+            gunAnimator.SetBool("IsFiring", Input.GetMouseButton(0));
+
             _spotLight.spotAngle = (180 / Mathf.PI) * 4 * 
                 Mathf.Atan(Mathf.Lerp(initialBulletSpread, finalBulletSpread, _timeShooting / timeToIncreaseAccuracy) / bulletSpeed);
             _spotLight.innerSpotAngle = _spotLight.spotAngle / 2;
@@ -135,7 +137,6 @@ namespace SGJ.Player
             if (_shotCoolDown > 0 || AmmoLeft <= 0)
                 return;
 
-            gunAnimator.SetBool("IsFiring", Input.GetMouseButton(0));
 
             if(!Input.GetMouseButton(0))
             {

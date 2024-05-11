@@ -87,6 +87,7 @@ MonoBehaviour:
   gunPoint: {fileID: 6518423791132579389}
   bulletPrefab: {fileID: 3365592121844557590, guid: 683a6134caebb8d40a1db8ac570fd52c,
     type: 3}
+  gunAnimator: {fileID: 54774194818415902}
 --- !u!114 &2998143484515855394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2820,7 +2821,7 @@ Transform:
   - {fileID: 1371014499166668794}
   m_Father: {fileID: 1517082316275762626}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -93.39986}
 --- !u!1 &6719914625188772980
 GameObject:
   m_ObjectHideFlags: 0
