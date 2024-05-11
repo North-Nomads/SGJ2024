@@ -145,7 +145,7 @@ namespace SGJ.Player
                     Mathf.Clamp01(_timeShooting / timeToRampUp));
             _shotCoolDown = Mathf.Lerp(initalFireDelay, finalFireDelay,
                 Mathf.Clamp01(_timeShooting / timeToRampUp));
-            _cameraManager.ShakeCamera(Random.onUnitSphere * 0.1f);
+            _cameraManager.ShakeCamera(Random.onUnitSphere * 0.08f);
             _flashTickGlowTimeLeft = flashTickDuration;
             
         }
