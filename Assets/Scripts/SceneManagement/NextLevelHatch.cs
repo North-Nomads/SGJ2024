@@ -17,7 +17,7 @@ namespace SGJ.SceneManagement
     {
         private const int CombatSceneID = 1;
 
-        [SerializeField] private LevelDifficulty difficulty;
+        private LevelDifficulty _difficulty;
         [SerializeField] private bool isHubHatch;
 
         private Animator _animator;
@@ -31,7 +31,7 @@ namespace SGJ.SceneManagement
                 _animator = GetComponentInChildren<Animator>();
 
             Array values = Enum.GetValues(typeof(LevelDifficulty));
-            difficulty = (LevelDifficulty)values.GetValue(Random.Range(0, values.Length));
+            _difficulty = (LevelDifficulty)values.GetValue(Random.Range(0, values.Length));
         }
 
         private void OnTriggerEnter(Collider other)
@@ -60,7 +60,7 @@ namespace SGJ.SceneManagement
 
         private void OnHatchWasChosen()
         {
-            OnHatchTriggered(gameObject, difficulty);
+            OnHatchTriggered(gameObject, _difficulty);
             if (!isHubHatch)
                 return;
 

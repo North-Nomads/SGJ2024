@@ -12,7 +12,7 @@ namespace SGJ.SceneManagement
         private const string HatchSpawnPointTag = "HatchSpawnPoint";
         private const string PathToHubCapsule = "Prefabs/Props/End Capsule";
         [SerializeField] private float delayBeforeReturnToHub = 3f;
-        [SerializeField] private float delayBetweenWaves;
+        private const float DelayBetweenWaves = .5f;
         [SerializeField] private bool isHubLocation;
 
         private AssetSpawner _assetSpawner;
@@ -108,7 +108,7 @@ namespace SGJ.SceneManagement
         private void LaunchWavesLoop()
         {
             _currentWaveIndex++;
-            _mobSpawner.TriggerNewWaveAfterDelay(delayBetweenWaves);
+            _mobSpawner.TriggerNewWaveAfterDelay(DelayBetweenWaves);
         }
 
         public void HandleWaveCleaned()
