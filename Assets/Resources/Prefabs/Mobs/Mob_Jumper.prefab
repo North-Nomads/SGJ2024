@@ -355,6 +355,7 @@ MonoBehaviour:
   jumpChargeMovingPart: {fileID: 3162577753683754446}
   desiredMovingPartPosition: {fileID: 4037903684179645228}
   legsPosition: {fileID: 4290287224463975877}
+  torus: {fileID: 7800798110016641205}
   desiredScale: {x: 1.2, y: 1, z: 1.2}
 --- !u!65 &6440939968408965289
 BoxCollider:
