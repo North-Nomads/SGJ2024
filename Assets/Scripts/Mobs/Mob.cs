@@ -63,7 +63,6 @@ namespace SGJ.Mobs
             _timeSinceDamaged += Time.deltaTime;
             if (_timeSinceDamaged <= timeToBonk)
                 gameObject.transform.GetChild(0).transform.localScale = Vector3.Lerp(Vector3.one, 0.8f * Vector3.one, 2 * (timeToBonk / 2 - _timeSinceDamaged) / timeToBonk);
-            Debug.Log(gameObject.transform.GetChild(0));
         }
 
         private void OnValidate()

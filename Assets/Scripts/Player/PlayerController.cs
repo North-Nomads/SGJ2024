@@ -101,7 +101,7 @@ namespace SGJ.Player
 
             void UseMedKit()
             {
-                OnEntityGotHit(float.PositiveInfinity);
+                OnEntityGotHit(float.NegativeInfinity);
                 _playerInventory.Inventory[Items.Medkit]--;
             }
         }
