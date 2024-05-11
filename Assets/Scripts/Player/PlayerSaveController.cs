@@ -28,8 +28,8 @@ namespace SGJ.Player
         private static readonly Dictionary<LevelDifficulty, int> _difficultyTotalMobs = new()
         {
             { LevelDifficulty.Peace, 0 },
-            { LevelDifficulty.Easy, 13 },
-            { LevelDifficulty.Medium, 43 },
+            { LevelDifficulty.Easy, 23 },
+            { LevelDifficulty.Medium, 54 },
             { LevelDifficulty.Hard, 86 },
         };
 

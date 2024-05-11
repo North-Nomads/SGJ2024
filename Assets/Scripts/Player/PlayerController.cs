@@ -3,7 +3,6 @@ using SGJ.GameItems;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Pool;
 using Random = UnityEngine.Random;
 
