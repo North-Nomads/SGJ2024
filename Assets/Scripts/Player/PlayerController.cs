@@ -25,9 +25,11 @@ namespace SGJ.Player
         [SerializeField] private float timeToIncreaseAccuracy;
         [SerializeField] private float ammo;
         [SerializeField]private float flashTickDuration;
+
         [Header("References")]
         [SerializeField] Transform gunPoint;
         [SerializeField] private Bullet bulletPrefab;
+        [SerializeField] private Animator gunAnimator;
 
         private PlayerInventory _playerInventory;
         private float _currentPlayerHealth;
@@ -120,6 +122,8 @@ namespace SGJ.Player
         }
         private void Shoot()
         {
+            gunAnimator.SetBool("IsFiring", Input.GetMouseButton(0));
+
             _spotLight.spotAngle = (180 / Mathf.PI) * 4 * 
                 Mathf.Atan(Mathf.Lerp(initialBulletSpread, finalBulletSpread, _timeShooting / timeToIncreaseAccuracy) / bulletSpeed);
             _spotLight.innerSpotAngle = _spotLight.spotAngle / 2;
@@ -132,6 +136,8 @@ namespace SGJ.Player
 
             if (_shotCoolDown > 0 || AmmoLeft <= 0)
                 return;
+
+
             if(!Input.GetMouseButton(0))
             {
                 _timeShooting = _timeShooting > 0 ? _timeShooting - 2 * Time.deltaTime : 0;

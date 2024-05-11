@@ -731,7 +731,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   delayBeforeReturnToHub: 3
-  delayBetweenWaves: 0
   isHubLocation: 1
 --- !u!4 &728240840
 Transform:
