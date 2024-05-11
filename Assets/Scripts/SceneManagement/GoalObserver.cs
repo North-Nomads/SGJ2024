@@ -10,25 +10,22 @@ namespace SGJ.SceneManagement
     public class GoalObserver : MonoBehaviour
     {
         private const string MobSpawnPointTag = "MobSpawnPoint";
-        private const string PathToHatch = "Prefabs/Props/Hatches/";
+        private const string PathToHatch = "Prefabs/Props/Hatches/Hatch";
         private const string HatchSpawnPointTag = "HatchSpawnPoint";
         [SerializeField] private float delayBeforeReturnToHub = 3f;
         [SerializeField] private float delayBetweenWaves;
         [SerializeField] private bool isHubLocation;
 
-        private readonly List<NextLevelHatch> _hatchInstances = new();
-
         private AssetSpawner _assetSpawner;
-        private MobSpawner _mobSpawner;
         private GameObject[] _spawnPoints;
         private PlayerController _player;
+        private MobSpawner _mobSpawner;
         private int _currentWaveIndex;
         private int _wavesThisMission;
         private bool _isLevelCleared;
 
         private void Start()
         {
-            print(PlayerSaveController.UpcomingDifficulty);
             _assetSpawner = new AssetSpawner(this);
             _currentWaveIndex = 0;
             _wavesThisMission = (int)PlayerSaveController.UpcomingDifficulty;
@@ -56,15 +53,9 @@ namespace SGJ.SceneManagement
             void SpawnHatches()
             {
                 var spawnPosition = GameObject.FindGameObjectWithTag(HatchSpawnPointTag).transform;
-                var allHatchesCombos = Resources.LoadAll<GameObject>(PathToHatch);
-                var hatchesGroup = Instantiate(allHatchesCombos[Random.Range(1, allHatchesCombos.Length)], spawnPosition);
-                var hatches = hatchesGroup.GetComponentsInChildren<NextLevelHatch>();
-
-                foreach (var hatch in hatches)
-                {
-                    hatch.OnHatchTriggered += HandleHatchWasChosen;
-                    _hatchInstances.Add(hatch);
-                }
+                var hatchPrefab = Resources.Load<NextLevelHatch>(PathToHatch);
+                var hatchInstance = Instantiate(hatchPrefab, spawnPosition);
+                hatchInstance.OnHatchTriggered += HandleHatchWasChosen;
             }
         }
 
@@ -73,7 +64,7 @@ namespace SGJ.SceneManagement
             if (!_isLevelCleared)
                 return;
 
-            print($"Sender: {sender}");
+            print($"Sender: {sender}: {e}");
             PlayerSaveController.UpcomingDifficulty = e;
 
             if (isHubLocation)
@@ -104,11 +95,13 @@ namespace SGJ.SceneManagement
         private void LaunchWavesLoop()
         {
             _currentWaveIndex++;
+            print($"Launching wave {_currentWaveIndex}/{_wavesThisMission}");
             _mobSpawner.TriggerNewWaveAfterDelay(delayBetweenWaves);
         }
 
         public void HandleWaveCleaned()
         {
+            print($"Wave {_currentWaveIndex} cleared of {_wavesThisMission}");
             if (_currentWaveIndex == _wavesThisMission)
             {
                 PlayerSaveController.SavePlayerProgress(_player.CurrentPlayerHealth, _player.PlayerInventory);
@@ -116,7 +109,6 @@ namespace SGJ.SceneManagement
                 return;
             }
 
-            print($"Launching wave {_currentWaveIndex++}/{_wavesThisMission}");
             LaunchWavesLoop();
         }
     }
