@@ -140,8 +140,9 @@ namespace SGJ.Player
             
             _bulletPool.Get();
             _playerInventory.Inventory[Items.Ammo]--;
-            _timeShooting += Mathf.Lerp(initalFireDelay, finalFireDelay,
-                Mathf.Clamp01(_timeShooting / timeToRampUp));
+            if(_timeShooting < timeToIncreaseAccuracy + timeToRampUp)
+                _timeShooting += Mathf.Lerp(initalFireDelay, finalFireDelay,
+                    Mathf.Clamp01(_timeShooting / timeToRampUp));
             _shotCoolDown = Mathf.Lerp(initalFireDelay, finalFireDelay,
                 Mathf.Clamp01(_timeShooting / timeToRampUp));
             _cameraManager.ShakeCamera(Random.onUnitSphere * 0.1f);
