@@ -3,7 +3,6 @@ using SGJ.GameItems;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.Pool;
 using Random = UnityEngine.Random;
 
@@ -46,6 +45,7 @@ namespace SGJ.Player
         private float _flashTickGlowTimeLeft;
 
         public int AmmoLeft => _playerInventory.Ammo;
+        public int MedkitsLeft => _playerInventory.Medkits;
         public Dictionary<Items, int> PlayerInventory => _playerInventory.Inventory;
 
         private bool IsPlayerAlive => CurrentPlayerHealth > 0;
@@ -56,7 +56,7 @@ namespace SGJ.Player
             get => _currentPlayerHealth;
             private set
             {
-                _currentPlayerHealth = value;
+                _currentPlayerHealth = Mathf.Clamp(PlayerSaveController.DefaultPlayerHealth, 0, value);
                 _playerUI.OnPlayerHealthChanged(this, _currentPlayerHealth / PlayerSaveController.DefaultPlayerHealth);
                 if (!IsPlayerAlive)
                     OnPlayerDied(this, this);
@@ -85,10 +85,24 @@ namespace SGJ.Player
             if (!IsPlayerAlive)
                 return;
 
-            _playerUI.UpdateAmmoInHUD(AmmoLeft);
+            _playerUI.UpdateInventoryHUD(AmmoLeft, MedkitsLeft);
             Look();
             Move();
             Shoot();
+            HandleMedkitUsage();
+        }
+
+        private void HandleMedkitUsage()
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+                if (_playerInventory.Inventory[Items.Medkit] > 0)
+                    UseMedKit();
+
+            void UseMedKit()
+            {
+                OnEntityGotHit(float.NegativeInfinity);
+                _playerInventory.Inventory[Items.Medkit]--;
+            }
         }
 
         private void Look()

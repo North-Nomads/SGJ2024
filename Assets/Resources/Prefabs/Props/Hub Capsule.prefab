@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1586105441903392513}
   - component: {fileID: 3595575882827678667}
   - component: {fileID: 3021547982795182016}
+  - component: {fileID: 5569103702123437298}
   m_Layer: 0
   m_Name: Hub Capsule
   m_TagString: HubHatch
@@ -96,5 +97,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5900263d80c8ca0468ca7a45c70ac632, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 6
-  isHubHatch: 0
+  difficulty: 2
+  isHubHatch: 1
+--- !u!65 &5569103702123437298
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3091423482224337438}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 7, y: 4, z: 7}
+  m_Center: {x: 0, y: 2, z: 0}
