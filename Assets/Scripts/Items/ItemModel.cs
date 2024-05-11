@@ -5,11 +5,7 @@ namespace SGJ.GameItems
     public enum Items
     {
         Ammo,
-        Medkit,
-        Sonar,
-        LifeAnalizer,
-        Grenade,
-        Dynamite
+        Medkit
     }
 
     [CreateAssetMenu(menuName = "Items/Item")]
