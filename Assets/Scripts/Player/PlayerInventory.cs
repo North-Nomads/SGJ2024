@@ -6,6 +6,7 @@ namespace SGJ.Player
     public class PlayerInventory 
     {
         private Dictionary<Items, int> _inventory = new();
+        private int _medkits;
 
         public PlayerInventory() => _inventory = PlayerSaveController.InventoryItems;
 
@@ -23,6 +24,16 @@ namespace SGJ.Player
 
         public Dictionary<Items, int> Inventory => _inventory;
 
-        public void ConsumeItemOfType(Items item, int quantity = 1) => _inventory[item] -= quantity;
+        public int Medkits
+        {
+            get => _inventory[Items.Medkit];
+            set
+            {
+                if (value < 0)
+                    return;
+
+                _inventory[Items.Medkit] = value;
+            }
+        }
     }
 }
