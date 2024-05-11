@@ -97,9 +97,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a105bf42dfeee774db58f0458c123b5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  drop:
-  - {fileID: 3362668755219991468, guid: 673cf888e07fd3d4f9faa906b06a2e1c, type: 3}
-  - {fileID: 3362668755219991468, guid: 2687009b53a13d8408281dfae0f6c4c7, type: 3}
+  generalDropChance: 1
+  dropChances:
+  - dropChance: 1
+    model: {fileID: 11400000, guid: 6fe74954c90a3d04aabb68acd13ebe44, type: 2}
+    minQuantity: 1
+    maxQuantity: 1
   timeToBonk: 0.3
   health: 40
 --- !u!136 &4923438825855893363

@@ -932,6 +932,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Barrel_2_low (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 5352305552925276846, guid: 5a206d4bcd0e2d74480d77a7fe20628f,
+        type: 3}
+      propertyPath: generalDropChance
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7876329537204389664, guid: 5a206d4bcd0e2d74480d77a7fe20628f,
         type: 3}
       propertyPath: m_RootOrder
