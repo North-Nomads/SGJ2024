@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/HUB.unity
     guid: 4fc11a9a66717dc458605674ce97c1f8
   - enabled: 1
+    path: Assets/Scenes/Arena1.unity
+    guid: 1b8192d6b9c8d554091f475aa56a7340
+  - enabled: 1
     path: Assets/Scenes/Combat.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects: {}

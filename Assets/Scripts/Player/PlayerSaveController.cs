@@ -24,6 +24,24 @@ namespace SGJ.Player
         private static float _savedPlayerHealth;
         private static Dictionary<Items, int> _inventory = new();
 
+
+        private static readonly Dictionary<LevelDifficulty, int> _difficultyTotalMobs = new()
+        {
+            { LevelDifficulty.Peace, 0 },
+            { LevelDifficulty.Easy, 23 },
+            { LevelDifficulty.Medium, 54 },
+            { LevelDifficulty.Hard, 86 },
+        };
+
+        private static readonly Dictionary<LevelDifficulty, int> _difficultyWaves = new()
+        {
+            { LevelDifficulty.Peace, 0 },
+            { LevelDifficulty.Easy, 2 },
+            { LevelDifficulty.Medium, 4 },
+            { LevelDifficulty.Hard, 6 },
+        };
+
+        public static bool IsLocationFinished { get; set; } 
         public static int CurrentMissionIndex
         {
             get => _currentMissionIndex;
@@ -38,9 +56,17 @@ namespace SGJ.Player
         public static float SavedPlayerHealth => _savedPlayerHealth;
         public static Dictionary<Items, int> InventoryItems => _inventory;
         public static float DefaultPlayerHealth => _defaultPlayerHealth;
-
         public static bool IsCurrentMissionLastOne => _currentMissionIndex == _currentRunMissionsAmount;
         public static LevelDifficulty UpcomingDifficulty { get; set; }
+        public static int MobsToSpawnThisWave
+        {
+            get
+            {
+                if (UpcomingDifficulty == LevelDifficulty.Peace)
+                    return 0;
+                return Mathf.CeilToInt(_difficultyTotalMobs[UpcomingDifficulty] / _difficultyWaves[UpcomingDifficulty]);
+            }
+        }
 
         static PlayerSaveController()
         {

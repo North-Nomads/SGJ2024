@@ -281,7 +281,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -311,7 +311,7 @@ MonoBehaviour:
     model: {fileID: 11400000, guid: 81d95f322cd8e1e4781edc886de601e3, type: 2}
     minQuantity: 200
     maxQuantity: 300
-  maxHealth: 100
+  maxHealth: 200
   defaultSpeed: 1.6
   damage: 25
   attackRange: 6

@@ -129,7 +129,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 6.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 900
@@ -163,55 +163,13 @@ MonoBehaviour:
     model: {fileID: 11400000, guid: 6fe74954c90a3d04aabb68acd13ebe44, type: 2}
     minQuantity: 1
     maxQuantity: 1
-  maxHealth: 100
+  maxHealth: 400
   defaultSpeed: 3.5
   damage: 20
   attackRange: 2
   attackChargeTime: 0.5
   spinAttackDuration: 2
   spinningSpeed: 7
-  spinningAcceleration:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 14.64356
-      outSlope: 14.64356
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.07065571
-    - serializedVersion: 3
-      time: 0.1004328
-      value: 1.0001135
-      inSlope: -0.014439598
-      outSlope: -0.014439598
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.1434148
-    - serializedVersion: 3
-      time: 0.84239584
-      value: 1.0003436
-      inSlope: -0.0068744114
-      outSlope: -0.0068744114
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.072557464
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0.000000059604645
-      inSlope: -15.654959
-      outSlope: -15.654959
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.04011011
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!54 &8127535543043721254
 Rigidbody:
   m_ObjectHideFlags: 0
