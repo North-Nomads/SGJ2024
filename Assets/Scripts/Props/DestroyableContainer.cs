@@ -1,8 +1,4 @@
 using SGJ.Combat;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class DestroyableContainer : MonoBehaviour, IHittable
@@ -29,16 +25,11 @@ public class DestroyableContainer : MonoBehaviour, IHittable
         Destroy(gameObject);
     }
 
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         _timeSinceDamaged += Time.deltaTime;
         if (_timeSinceDamaged < timeToBonk)
-            gameObject.transform.localScale = Vector3.Lerp(Vector3.one, 1.1f * Vector3.one, 2*(timeToBonk / 2 - _timeSinceDamaged) / timeToBonk);
+            gameObject.transform.localScale = Vector3.Lerp(Vector3.one, 1.1f * Vector3.one, 2 * (timeToBonk / 2 - _timeSinceDamaged) / timeToBonk);
     }
 }
