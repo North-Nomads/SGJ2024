@@ -66,7 +66,7 @@ namespace SGJ.Player
         }
 
         private void Start()
-        {
+        { 
             _characterController = GetComponent<CharacterController>();
             _bulletPool = new(SpawnBullet, OnGetBullet, OnReleaseBullet, OnDestroyBullet, true, 30, 70);
             _playerCamera = Camera.main;
