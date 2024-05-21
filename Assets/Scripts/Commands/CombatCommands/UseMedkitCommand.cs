@@ -2,7 +2,7 @@ using SGJ.Player;
 
 namespace SGJ.Commands.CombatCommands
 {
-    public partial class UseMedkitCommand : RotationCommand
+    public class UseMedkitCommand : CombatCommand
     {
         public override void Execute(PlayerCombat player)
         {

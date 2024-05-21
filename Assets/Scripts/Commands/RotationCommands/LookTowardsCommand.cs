@@ -1,17 +1,17 @@
 using SGJ.Player;
+using UnityEngine;
 
 namespace SGJ.Commands.RotationCommands
 {
     public partial class LookTowardsCommand : RotationCommand
     {
+        private Vector3 _cursorPostion;
+
         public override void Execute(PlayerEyes player)
         {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Execute(PlayerCombat player)
-        {
-            throw new System.NotImplementedException();
+            Physics.Raycast(player.PlayerCamera.ActiveCamera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit);
+            _cursorPostion = hit.point;
+            player.RotateTowards(_cursorPostion);
         }
     }
 }

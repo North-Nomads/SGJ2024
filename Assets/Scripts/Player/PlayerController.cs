@@ -88,7 +88,6 @@ namespace SGJ.Player
                 return;
 
             _playerUI.UpdateInventoryHUD(AmmoLeft, MedkitsLeft);
-            Look();
             Shoot();
             HandleMedkitUsage();
         }
@@ -106,13 +105,7 @@ namespace SGJ.Player
             }
         }
 
-        private void Look()
-        {
-            Physics.Raycast(_playerCamera.ScreenPointToRay(Input.mousePosition), out RaycastHit hit);
-            _cursorPostion = hit.point;
-            transform.LookAt(new Vector3(_cursorPostion.x, transform.position.y, _cursorPostion.z));
-            _aimDirection = (new Vector3(_cursorPostion.x, transform.position.y, _cursorPostion.z) - transform.position).normalized;
-        }
+        
 
         private void Shoot()
         {
