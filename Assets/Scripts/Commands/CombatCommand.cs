@@ -2,7 +2,7 @@
 
 namespace SGJ.Commands
 {
-    public abstract class CombatCommand
+    public abstract class RotationCommand
     {
         public abstract void Execute(PlayerCombat player);
     }

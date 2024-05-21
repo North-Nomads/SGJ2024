@@ -59,7 +59,7 @@ namespace SGJ.Commands
             throw new NotImplementedException();
         }
 
-        private CombatCommand HandleCombatInput()
+        private RotationCommand HandleCombatInput()
         {
             throw new NotImplementedException();
         }
