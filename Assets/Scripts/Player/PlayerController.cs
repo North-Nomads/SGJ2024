@@ -89,7 +89,6 @@ namespace SGJ.Player
 
             _playerUI.UpdateInventoryHUD(AmmoLeft, MedkitsLeft);
             Look();
-            Move();
             Shoot();
             HandleMedkitUsage();
         }
@@ -115,11 +114,6 @@ namespace SGJ.Player
             _aimDirection = (new Vector3(_cursorPostion.x, transform.position.y, _cursorPostion.z) - transform.position).normalized;
         }
 
-        private void Move()
-        {
-            Vector3 movementVector = Vector3.ClampMagnitude(new(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")), 1);
-            _characterController.SimpleMove(movementVector * playerSpeed);
-        }
         private void Shoot()
         {
             gunAnimator.SetBool("IsFiring", Input.GetMouseButton(0));

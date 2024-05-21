@@ -6,7 +6,7 @@ namespace SGJ.Commands.MoveCommands
     {
         public override void Execute(PlayerMovement player)
         {
-            throw new System.NotImplementedException();
+            player.MoveSelf();
         }
     }
 }
