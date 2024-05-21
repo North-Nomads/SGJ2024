@@ -1,11 +1,13 @@
-﻿using SGJ.Weapons;
+﻿using SGJ.GameItems;
+using SGJ.Proprs;
+using SGJ.Weapons;
 using System;
 using UnityEngine;
 
 namespace SGJ.Player
 {
     [RequireComponent(typeof(PlayerCamera))]
-    public class PlayerWeaponry : MonoBehaviour
+    public class PlayerWeaponry : MonoBehaviour, IPickerUp
     {
         private PlayerCamera _playerCamera;
         private IGeneralWeapon _mainWeapon;
@@ -32,6 +34,11 @@ namespace SGJ.Player
         public void EquipWeapon(IGeneralWeapon weapon)
         {
             _mainWeapon = weapon;
+        }
+
+        public void AddItemsInInventory(DroppedItem item)
+        {
+            // Check if is ammo and add to current weapon ammunition
         }
     }
 }

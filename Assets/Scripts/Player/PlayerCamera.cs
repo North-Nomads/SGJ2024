@@ -8,6 +8,11 @@ namespace SGJ.Player
         private Camera _currentCamera;
         public Camera ActiveCamera => _currentCamera;
 
+        private void Start()
+        {
+            _currentCamera = Camera.main;
+        }
+
         public void SetFollowObject(Transform followObject) => _followObject = followObject;
 
         private void ShakeCamera(float time)
