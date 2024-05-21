@@ -1,5 +1,3 @@
-using SGJ.SceneManagement;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
