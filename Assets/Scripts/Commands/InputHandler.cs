@@ -6,8 +6,8 @@ namespace SGJ.Commands
 {
     public class InputHandler : MonoBehaviour
     {
-        private float _horizontalAxisInput;
-        private float _verticalAxisInput;
+        private static float _horizontalAxisInput;
+        private static float _verticalAxisInput;
 
         // Player components
         private PlayerMovement _playerMovement;
@@ -16,8 +16,8 @@ namespace SGJ.Commands
         private PlayerCombat _playerCombat;
         private PlayerInteraction _playerInteraction;
 
-        public float HorizontalAxisInput => _horizontalAxisInput;
-        public float VerticalAxisInput => _verticalAxisInput;
+        public static float HorizontalAxisInput => _horizontalAxisInput;
+        public static float VerticalAxisInput => _verticalAxisInput;
 
         public static InputHandler Instance { get; private set; }
 
@@ -64,7 +64,7 @@ namespace SGJ.Commands
             throw new NotImplementedException();
         }
 
-        private WeaponryInput HandleWeaponryInput()
+        private WeaponryCommand HandleWeaponryInput()
         {
             throw new NotImplementedException();
         }
