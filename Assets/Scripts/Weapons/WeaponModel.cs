@@ -2,7 +2,7 @@
 
 namespace SGJ.Weapons
 {
-    public class WeaponModel : ScriptableObject, IProjectile
+    public class WeaponModel : ScriptableObject
     {
         [SerializeField, Min(0)] private float hitDamage;
         [SerializeField, Range(0, 180)] private float spreadAngle;

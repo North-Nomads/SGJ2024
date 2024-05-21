@@ -38,6 +38,10 @@ namespace SGJ.Mobs
         public float DefaultSpeed => defaultSpeed;
         public MobDropper MobDropper => _mobDropper;
 
+        public float MaxHealth => throw new NotImplementedException();
+
+        public float CurrentHealth => throw new NotImplementedException();
+
         public void SetMobParameters(PlayerController player, MobSpawner owner)
         {
             Player = player;
@@ -108,8 +112,29 @@ namespace SGJ.Mobs
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag(PlayerTag))
-                Player.OnEntityGotHit(damage);
+            // Rework
+            /*if (other.CompareTag(PlayerTag))
+                Player.OnEntityGotHit(damage);*/
+        }
+
+        public void HandleHit()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DisplayHitImpact()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void HandleHit(float incomeDamage)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void HandleDeath()
+        {
+            throw new NotImplementedException();
         }
     }
 

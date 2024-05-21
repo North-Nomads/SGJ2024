@@ -23,7 +23,7 @@ public class Bullet : MonoBehaviour
         if(collision.gameObject.layer == LayerMask.NameToLayer("Mob"))
         {
             if (collision.gameObject.TryGetComponent<IHittable>(out IHittable hittable))
-                hittable.OnEntityGotHit(Damage);
+                hittable.HandleHit(Damage);
         }
         _pool.Release(this);
     }

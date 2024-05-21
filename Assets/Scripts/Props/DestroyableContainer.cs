@@ -12,6 +12,11 @@ public class DestroyableContainer : MonoBehaviour, IHittable
     [SerializeField] private float health;
 
     private float _timeSinceDamaged;
+
+    public float MaxHealth => throw new System.NotImplementedException();
+
+    public float CurrentHealth => throw new System.NotImplementedException();
+
     public void OnEntityGotHit(float incomeDamage)
     {
         health -= incomeDamage;
@@ -57,5 +62,25 @@ public class DestroyableContainer : MonoBehaviour, IHittable
         _timeSinceDamaged += Time.deltaTime;
         if (_timeSinceDamaged < timeToBonk)
             gameObject.transform.localScale = Vector3.Lerp(Vector3.one, 0.9f * Vector3.one, 2 * (timeToBonk / 2 - _timeSinceDamaged) / timeToBonk);
+    }
+
+    public void HandleHit()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void DisplayHitImpact()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void HandleHit(float incomeDamage)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void HandleDeath()
+    {
+        throw new System.NotImplementedException();
     }
 }

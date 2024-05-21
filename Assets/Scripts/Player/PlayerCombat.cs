@@ -27,6 +27,10 @@ namespace SGJ.Player
             }
         }
 
+        public float MaxHealth => throw new NotImplementedException();
+
+        public float CurrentHealth => throw new NotImplementedException();
+
         private int _healthKitsLeft;
 
         public EventHandler<float> OnPlayerHealthUpdated = delegate { };
@@ -47,6 +51,26 @@ namespace SGJ.Player
         public void AddItemsInInventory(DroppedItem item)
         {
             // Check if item is medkit and if so -> add to medkits
+        }
+
+        public void HandleHit()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void DisplayHitImpact()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void HandleHit(float incomeDamage)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void HandleDeath()
+        {
+            throw new NotImplementedException();
         }
     }
 }
