@@ -2,7 +2,7 @@
 
 namespace SGJ.Commands
 {
-    public abstract class WeaponryInput
+    public abstract class WeaponryCommand
     {
         public abstract void Execute(PlayerWeaponry player);
     }
