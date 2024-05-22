@@ -1,4 +1,5 @@
 using SGJ.Commands.MoveCommands;
+using SGJ.Commands.RotationCommands;
 using SGJ.Infrastructure;
 using SGJ.Player;
 using System;
@@ -28,6 +29,7 @@ namespace SGJ.Commands
         {
             Instance = this;
             _playerMovement = ServiceLocator.Current.Get<PlayerMovement>();
+            _playerEyes = ServiceLocator.Current.Get<PlayerEyes>();
         }
 
         private void Update()
@@ -73,7 +75,7 @@ namespace SGJ.Commands
 
         private RotationCommand HandleRotationInput()
         {
-            return null;
+            return new LookTowardsCommand();
         }
 
         private MoveCommand HandleMoveInput()

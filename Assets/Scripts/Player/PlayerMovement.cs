@@ -12,12 +12,6 @@ namespace SGJ.Player
 
         private CharacterController _characterController;
 
-        private void Start()
-        {
-            _characterController = GetComponent<CharacterController>();
-            ServiceLocator.Current.Register(this);
-        }
-
         public void MoveSelf()
         {
             Vector3 movementVector = Vector3.ClampMagnitude(new (InputHandler.HorizontalAxisInput,
@@ -29,6 +23,12 @@ namespace SGJ.Player
         private void PerformDashForward()
         {
 
+        }
+
+        public void OnServiceInstantiated()
+        {
+            _characterController = GetComponent<CharacterController>();
+            ServiceLocator.Current.Register(this);
         }
     }
 }

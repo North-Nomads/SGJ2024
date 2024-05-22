@@ -14,12 +14,6 @@ namespace SGJ.Player
         
         public Camera ActiveCamera => _currentCamera;
 
-        private void Start()
-        {
-            _currentCamera = Camera.main;
-            ServiceLocator.Current.Register(this);
-        }
-
         private void InstantiateCamera()
         {
             var camera = Resources.Load<CinemachineVirtualCamera>(PlayerCameraPath);
@@ -36,6 +30,12 @@ namespace SGJ.Player
         private void ShakeCamera(float time)
         {
             // TODO: implement
+        }
+
+        public void OnServiceInstantiated()
+        {
+            _currentCamera = Camera.main;
+            ServiceLocator.Current.Register(this);
         }
     }
 }
