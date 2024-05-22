@@ -19,6 +19,7 @@ namespace SGJ.Player
         private void Start()
         {
             _playerCamera = GetComponent<PlayerCamera>();
+            _playerCamera.SetFollowObject(transform);
         }
 
         public void ShootEquippedWeapon()
