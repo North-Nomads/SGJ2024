@@ -1,5 +1,4 @@
-﻿using SGJ.SceneManagement;
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace SGJ.Player
@@ -7,13 +6,19 @@ namespace SGJ.Player
     public class PlayerUI : MonoBehaviour
     {
         [SerializeField] private PlayerUICanvas playerUIPrefab;
-        private PlayerUICanvas _canvasInstance;
-        private int _lastAmmoCapacity;
-        private int _lastMedKits;
-
         public EventHandler<float> OnPlayerHealthChanged = delegate { };
 
-        public void Initialize()
+        public void HandlePlayerHealthUpdated(float newHeakth)
+        {
+
+        }
+
+        public void HandlePlayerAmmoUpdated(float newAmmo)
+        {
+
+        }
+
+        /*public void Initialize()
         {
             _canvasInstance = Instantiate(playerUIPrefab, transform);
             OnPlayerHealthChanged += _canvasInstance.UpdateFiller;
@@ -28,6 +33,6 @@ namespace SGJ.Player
             _lastMedKits = medkits;
             _canvasInstance.UpdateAmmoText(currentAmmo);
             _canvasInstance.UpdateMedKitText(medkits);
-        }
+        }*/
     }
 }

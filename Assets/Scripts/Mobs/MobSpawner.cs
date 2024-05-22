@@ -1,6 +1,4 @@
 ﻿using SGJ.Player;
-using SGJ.SceneManagement;
-using System.Collections;
 using UnityEngine;
 
 namespace SGJ.Mobs
@@ -9,9 +7,8 @@ namespace SGJ.Mobs
     {
         private const string MobsPath = "Prefabs/Mobs";
 
-        private readonly GoalObserver _goalObserver;
         private readonly GameObject[] _spawnPoints;
-        private readonly PlayerController _player;
+        private readonly PlayerCombat _player;
         private readonly Mob[] _mobs;
 
         [SerializeField] private int mobsQuantity;
@@ -20,9 +17,9 @@ namespace SGJ.Mobs
         private Mob GetRandomMob => _mobs[Random.Range(0, _mobs.Length)];
         private Transform GetRandomSpawnPoint => _spawnPoints[Random.Range(0, _spawnPoints.Length)].transform;
 
-        public MobSpawner(GoalObserver goalObserver, GameObject[] spawnPoints, PlayerController player)
+        public MobSpawner(/*GoalObserver goalObserver, */GameObject[] spawnPoints, PlayerCombat player)
         {
-            _goalObserver = goalObserver;
+            //_goalObserver = goalObserver;
             _spawnPoints = spawnPoints;
             _player = player;
             _mobs = Resources.LoadAll<Mob>(MobsPath);
@@ -34,11 +31,11 @@ namespace SGJ.Mobs
             Object.Destroy(deadMob.gameObject);
             _mobToKillLeft--;
             Debug.Log($"{_mobToKillLeft} left");
-            if (_mobToKillLeft == 0)
-                _goalObserver.HandleWaveCleaned();
+            /*if (_mobToKillLeft == 0)
+                _goalObserver.HandleWaveCleaned();*/
         }
 
-        internal void TriggerNewWaveAfterDelay(float delayBetweenWaves)
+        /*internal void TriggerNewWaveAfterDelay(float delayBetweenWaves)
         {
             _goalObserver.StartCoroutine(StartNewWaveAfterDelay());
 
@@ -57,6 +54,6 @@ namespace SGJ.Mobs
                 }
                 _mobToKillLeft = PlayerSaveController.MobsToSpawnThisWave;
             }
-        }
+        }*/
     }
 }

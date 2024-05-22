@@ -31,7 +31,7 @@ namespace SGJ.Mobs
         private float _timeSinceDamaged;
         private float timeToBonk = 0.3f;
 
-        protected PlayerController Player { get; private set; }
+        protected PlayerCombat Player { get; private set; }
         protected NavMeshAgent Agent { get; private set; }
         public MobCombat MobCombat { get;  protected set; }
         public MobState CurrentState { get; protected set; }
@@ -42,7 +42,7 @@ namespace SGJ.Mobs
 
         public float CurrentHealth => throw new NotImplementedException();
 
-        public void SetMobParameters(PlayerController player, MobSpawner owner)
+        public void SetMobParameters(PlayerCombat player, MobSpawner owner)
         {
             Player = player;
             Agent = GetComponent<NavMeshAgent>();

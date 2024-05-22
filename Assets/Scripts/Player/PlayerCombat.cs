@@ -10,40 +10,37 @@ namespace SGJ.Player
     {
         [SerializeField] private float playerMaxHealth;
         private float _playerCurrentHealth;
+        private int _healthKitsLeft;
 
-        public float PlayerCurrentHealth
+        public EventHandler<float> OnPlayerHealthUpdated = delegate { };
+        public EventHandler<PlayerCombat> OnPlayerDied = delegate { };
+
+        public bool IsPlayerAlive => _playerCurrentHealth < 0f;
+        public float CurrentHealth
         {
             get => _playerCurrentHealth;
             set
             {
-                _playerCurrentHealth = value;
-                if (_playerCurrentHealth < 0f)
-                {
-                    // handle player death
-                    _playerCurrentHealth = 0f;
-                }
-
-                OnPlayerHealthUpdated(this, _playerCurrentHealth);
+                /*_playerCurrentHealth = Mathf.Clamp(PlayerSaveController.DefaultPlayerHealth, 0, value);
+                OnPlayerHealthUpdated(this, _playerCurrentHealth / PlayerSaveController.DefaultPlayerHealth);*/
+                if (!IsPlayerAlive)
+                    OnPlayerDied(this, this);
             }
         }
-
-        public float MaxHealth => throw new NotImplementedException();
-
-        public float CurrentHealth => throw new NotImplementedException();
-
-        private int _healthKitsLeft;
-
-        public EventHandler<float> OnPlayerHealthUpdated = delegate { };
+        public float MaxHealth => playerMaxHealth;
 
         private void Start()
         {
-            PlayerCurrentHealth = playerMaxHealth; 
+            CurrentHealth = MaxHealth; 
         }
 
         public void UseMedKit()
         {
             if (_healthKitsLeft > 0)
+            {
                 OnEntityGotHit(float.NegativeInfinity);
+                _healthKitsLeft--;
+            }
         }
 
         public void OnEntityGotHit(float incomeDamage) => _playerCurrentHealth -= incomeDamage;
