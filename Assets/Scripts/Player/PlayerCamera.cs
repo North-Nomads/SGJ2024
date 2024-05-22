@@ -22,7 +22,6 @@ namespace SGJ.Player
 
         private void InstantiateCamera()
         {
-            Debug.Log("Instntiated camera");
             var camera = Resources.Load<CinemachineVirtualCamera>(PlayerCameraPath);
             _virutalCamera = Instantiate(camera);
         }
