@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2426633070493317284}
   - component: {fileID: 1586105441903392513}
   - component: {fileID: 3595575882827678667}
-  - component: {fileID: 3021547982795182016}
   - component: {fileID: 5569103702123437298}
   m_Layer: 0
   m_Name: Hub Capsule
@@ -85,20 +84,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3021547982795182016
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3091423482224337438}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5900263d80c8ca0468ca7a45c70ac632, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  difficulty: 2
-  isHubHatch: 1
 --- !u!65 &5569103702123437298
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -1,3 +1,5 @@
+using SGJ.Commands.MoveCommands;
+using SGJ.Infrastructure;
 using SGJ.Player;
 using System;
 using UnityEngine;
@@ -20,12 +22,12 @@ namespace SGJ.Commands
         public static float VerticalAxisInput => _verticalAxisInput;
 
         public static InputHandler Instance { get; private set; }
+        public bool IsWASDPressed => Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.S);
 
         private void Start()
         {
             Instance = this;
-
-            // Get _player$$$ components using ServiceLocator
+            _playerMovement = ServiceLocator.Current.Get<PlayerMovement>();
         }
 
         private void Update()
@@ -56,27 +58,31 @@ namespace SGJ.Commands
 
         private InteractionCommand HandleInteractionInput()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         private CombatCommand HandleCombatInput()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         private WeaponryCommand HandleWeaponryInput()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         private RotationCommand HandleRotationInput()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         private MoveCommand HandleMoveInput()
         {
-            throw new NotImplementedException();
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+                return new DashCommand();
+            else if (IsWASDPressed)
+                return new RunCommand();
+            return null;
         }
     }
 }

@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using SGJ.Commands;
+using SGJ.Infrastructure;
 
 namespace SGJ.Player
 {
     [RequireComponent(typeof(CharacterController))]
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovement : MonoBehaviour, IGameService
     {
         [SerializeField] private float moveSpeed;
         [SerializeField] private float dashSpeed;
@@ -14,6 +15,7 @@ namespace SGJ.Player
         private void Start()
         {
             _characterController = GetComponent<CharacterController>();
+            ServiceLocator.Current.Register(this);
         }
 
         public void MoveSelf()
