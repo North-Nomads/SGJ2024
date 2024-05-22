@@ -1,16 +1,16 @@
 using SGJ.Commands.MoveCommands;
 using SGJ.Commands.RotationCommands;
+using SGJ.Commands.WeaponryCommands;
 using SGJ.Infrastructure;
 using SGJ.Player;
-using System;
 using UnityEngine;
 
 namespace SGJ.Commands
 {
     public class InputHandler : MonoBehaviour
     {
-        private static float _horizontalAxisInput;
-        private static float _verticalAxisInput;
+        private float _horizontalAxisInput;
+        private float _verticalAxisInput;
 
         // Player components
         private PlayerMovement _playerMovement;
@@ -19,8 +19,8 @@ namespace SGJ.Commands
         private PlayerCombat _playerCombat;
         private PlayerInteraction _playerInteraction;
 
-        public static float HorizontalAxisInput => _horizontalAxisInput;
-        public static float VerticalAxisInput => _verticalAxisInput;
+        public float HorizontalAxisInput => _horizontalAxisInput;
+        public float VerticalAxisInput => _verticalAxisInput;
 
         public static InputHandler Instance { get; private set; }
         public bool IsWASDPressed => Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.S);
@@ -30,6 +30,7 @@ namespace SGJ.Commands
             Instance = this;
             _playerMovement = ServiceLocator.Current.Get<PlayerMovement>();
             _playerEyes = ServiceLocator.Current.Get<PlayerEyes>();
+            _playerWeaponry = ServiceLocator.Current.Get<PlayerWeaponry>();
         }
 
         private void Update()
@@ -70,6 +71,10 @@ namespace SGJ.Commands
 
         private WeaponryCommand HandleWeaponryInput()
         {
+            if (Input.GetKey(KeyCode.Mouse0))
+                return new FireCommand();
+            else if (Input.GetKey(KeyCode.Mouse1))
+                return new MeleeAttackCommand();
             return null;
         }
 

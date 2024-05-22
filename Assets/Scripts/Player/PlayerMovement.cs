@@ -14,8 +14,8 @@ namespace SGJ.Player
 
         public void MoveSelf()
         {
-            Vector3 movementVector = Vector3.ClampMagnitude(new (InputHandler.HorizontalAxisInput,
-                0, InputHandler.VerticalAxisInput), 1);
+            Vector3 movementVector = Vector3.ClampMagnitude(new (InputHandler.Instance.HorizontalAxisInput, 0,
+                InputHandler.Instance.VerticalAxisInput), 1);
             
             _characterController.SimpleMove(movementVector * moveSpeed);
         }

@@ -6,7 +6,7 @@ namespace SGJ.Commands.WeaponryCommands
     {
         public override void Execute(PlayerWeaponry player)
         {
-            throw new System.NotImplementedException();
+            player.ShootEquippedWeapon();
         }
     }
 }

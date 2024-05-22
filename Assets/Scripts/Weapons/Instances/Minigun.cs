@@ -3,6 +3,7 @@ using UnityEngine.Pool;
 
 namespace SGJ.Weapons.Instances
 {
+    [RequireComponent(typeof(Animator))]
     public class Minigun : MonoBehaviour, IGeneralWeapon
     {
         /*[Header("GunStats")]
