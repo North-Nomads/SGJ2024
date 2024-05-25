@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using UnityEngine;
 
 namespace SGJ.Weapons
 {
@@ -8,6 +9,7 @@ namespace SGJ.Weapons
         public Vector3 FlyDirection { get; set; }
         public void OnInstantiated(Vector3 position, float speed, Vector3 normalizedFlyDirection);
         public void KeepMoving();
-        public void OnHit();
+
+        public event EventHandler OnHitEvent; 
     }
 }

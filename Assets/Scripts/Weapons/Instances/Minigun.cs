@@ -1,40 +1,61 @@
+using SGJ.Combat;
+using SGJ.Weapons.Modifiers;
 using UnityEngine;
+using UnityEngine.Assertions.Must;
 using UnityEngine.Pool;
 
 namespace SGJ.Weapons.Instances
 {
     [RequireComponent(typeof(Animator))]
-    public class Minigun : MonoBehaviour, IGeneralWeapon
+    public class Minigun : MonoBehaviour, IGeneralWeapon, IAcceleratedWeapon, IPrecisedWeapon
     {
-        /*[Header("GunStats")]
-        [SerializeField] private float bulletSpeed;
+        [Header("GunStats")]
+        //[SerializeField] private float bulletSpeed;
         [SerializeField] private float initialBulletSpread;
-        [SerializeField] private float finalBulletSpread;
+        [SerializeField] private float finalBulletSpreadAngle;
         [SerializeField] private float initalFireDelay;
         [SerializeField] private float finalFireDelay;
         [SerializeField] private float timeToRampUp;
         [SerializeField] private float timeToIncreaseAccuracy;
-        [SerializeField] private float ammo;
-        [SerializeField] private float flashTickDuration;*/
+        //[SerializeField] private float ammo;
+        //[SerializeField] private float flashTickDuration;
+
+        [SerializeField] WeaponModel model;
+ 
         private ObjectPool<IProjectile> _pool;
         private Animator _animator;
+        private IAcceleratedWeaponTimer _fireRateTimer;
+        private IAcceleratedWeaponTimer _accuracyTimer;
 
-        public WeaponModel Weapon { set => throw new System.NotImplementedException(); }
+        public WeaponModel Weapon { get => model; }
         public int AmmoLeft { set => throw new System.NotImplementedException(); }
         public IProjectile WeaponProjectile { set => throw new System.NotImplementedException(); }
         public ObjectPool<IProjectile> ProjectilePool => _pool;
         public Animator GunAnimator => _animator;
 
+        public float FinalFireDelay => finalFireDelay;
+
+        public float TimeToRampUp => timeToRampUp;
+
+        public float FinalSpreadAngle => finalBulletSpreadAngle;
+
+        public float TimeToIncreaseAccuracy => timeToIncreaseAccuracy;
+
         public void TryPerformAttack()
         {
-            throw new System.NotImplementedException();
+            
         }
 
         private void Start()
         {
             _animator = GetComponent<Animator>();
+            _fireRateTimer = new AcceleratedWeaponTimer(initalFireDelay, finalFireDelay, timeToRampUp);
             //_pool = new(SpawnBullet, OnGetBullet, OnReleaseBullet, OnDestroyBullet, true, 30, 70);
 
+        }
+        private void Update()
+        {
+            
         }
 
         /*private void Shoot()
@@ -71,25 +92,24 @@ namespace SGJ.Weapons.Instances
             _cameraManager.ShakeCamera(Random.onUnitSphere * 0.08f);
             _flashTickGlowTimeLeft = flashTickDuration;
 
-        }
+        }*/
 
-        private Bullet SpawnBullet()
+        private IProjectile SpawnBullet()
         {
-            float bulletSpread = Mathf.Lerp(initialBulletSpread, finalBulletSpread, _timeShooting / timeToIncreaseAccuracy);
-            Vector3 speed = _aimDirection * bulletSpeed + Vector3.Cross(_aimDirection, Vector3.up).normalized * Random.Range(-bulletSpread, bulletSpread);
-            Bullet bullet = Instantiate(bulletPrefab, gunPoint.position, Quaternion.LookRotation(speed, Vector3.up));
-            bullet.Pool = _pool;
-            bullet.Speed = speed;
+            float bulletSpread = Mathf.Lerp(Mathf.Tan(Weapon.SpreadAngle) / 2,
+                Mathf.Tan(FinalSpreadAngle) / 2, _fireRateTimer.AccelerationProcentage);
+            Vector3 direction = transform.forward + Vector3.Cross(transform.forward, Vector3.up).normalized * Random.Range(-bulletSpread, bulletSpread);
+            IProjectile bullet = Weapon.WeaponProjectile;
+            bullet.OnInstantiated(transform.position, Weapon.ProjectileSpeed, direction.normalized);
             return bullet;
         }
 
         private void OnGetBullet(Bullet bullet)
         {
-            float bulletSpread = Mathf.Lerp(initialBulletSpread, finalBulletSpread, _timeShooting / timeToIncreaseAccuracy);
-            Vector3 speed = _aimDirection * bulletSpeed + Vector3.Cross(_aimDirection, Vector3.up).normalized * Random.Range(-bulletSpread, bulletSpread);
-            bullet.transform.SetPositionAndRotation(gunPoint.position, Quaternion.LookRotation(speed, Vector3.up));
-            bullet.Pool = _pool;
-            bullet.Speed = speed;
+            float bulletSpread = Mathf.Lerp(Mathf.Tan(Weapon.SpreadAngle) / 2,
+                Mathf.Tan(FinalSpreadAngle) / 2, _fireRateTimer.AccelerationProcentage);
+            Vector3 direction = transform.forward + Vector3.Cross(transform.forward, Vector3.up).normalized * Random.Range(-bulletSpread, bulletSpread);
+            bullet.transform.SetPositionAndRotation(transform.position, transform.rotation);
             bullet.gameObject.SetActive(true);
         }
 
@@ -101,6 +121,6 @@ namespace SGJ.Weapons.Instances
         private void OnDestroyBullet(Bullet bullet)
         {
             Destroy(bullet.gameObject);
-        }*/
+        }
     }
 }

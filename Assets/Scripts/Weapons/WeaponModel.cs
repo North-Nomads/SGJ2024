@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿using SGJ.Projectiles;
+using System;
+using UnityEngine;
 
 namespace SGJ.Weapons
 {
+    [CreateAssetMenu(fileName = "Weapon")]
     public class WeaponModel : ScriptableObject
     {
         [SerializeField, Min(0)] private float hitDamage;
@@ -11,6 +14,7 @@ namespace SGJ.Weapons
         [SerializeField, Min(0)] private float nextAttackDelay;
         [SerializeField] private float forwardImpulseStrength;
         [SerializeField] private float mobKnockbackStrength;
+        [SerializeField] private Projectile weaponProjectile;
 
         public float HitDamage => hitDamage;
         public float SpreadAngle => spreadAngle;
@@ -19,5 +23,6 @@ namespace SGJ.Weapons
         public float NextAttackDelay => nextAttackDelay;
         public float ForwardImpulseStrength => forwardImpulseStrength;
         public float MobKnockbackStrength => mobKnockbackStrength;
+        public IProjectile WeaponProjectile { get => weaponProjectile; }
     }
 }

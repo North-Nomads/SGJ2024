@@ -1,22 +1,24 @@
-using SGJ.Combat;
-using UnityEngine;
-using UnityEngine.Pool;
 
-public class Bullet : MonoBehaviour
+using SGJ.Combat;
+using SGJ.Projectiles;
+using SGJ.Weapons;
+using System;
+using UnityEngine;
+
+public class Bullet : Projectile
 {
     [SerializeField] private float lifeSpan;
 
     private float _actualLifespan;
-    private ObjectPool<Bullet> _pool;
     private const float Damage = 15;
 
-    public Vector3 Speed { get; set; }
+    public override  event EventHandler OnHitEvent;
 
     private void OnEnable() => _actualLifespan = lifeSpan;
-    public ObjectPool<Bullet> Pool
-    {
-        set { _pool = value; }
-    }
+
+
+    public  override float Speed { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+    public override Vector3 FlyDirection { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -25,7 +27,7 @@ public class Bullet : MonoBehaviour
             if (collision.gameObject.TryGetComponent<IHittable>(out IHittable hittable))
                 hittable.HandleHit(Damage);
         }
-        _pool.Release(this);
+        OnHitEvent.Invoke(this, null);
     }
 
 
@@ -34,8 +36,20 @@ public class Bullet : MonoBehaviour
         _actualLifespan -= Time.deltaTime;
         if (_actualLifespan <= 0)
         {
-            _pool.Release(this);
+            OnHitEvent.Invoke(this, null);
         }
-        transform.position += Speed * Time.deltaTime;
+        KeepMoving();
+    }
+
+    public override  void KeepMoving()
+    {
+        transform.position += FlyDirection * Time.deltaTime;
+    }
+
+    public override  void OnInstantiated(Vector3 position, float speed, Vector3 normalizedFlyDirection)
+    {
+        Instantiate(this, position, Quaternion.FromToRotation(Vector3.forward, position));
+        Speed = speed;
+        FlyDirection = speed * normalizedFlyDirection;
     }
 }

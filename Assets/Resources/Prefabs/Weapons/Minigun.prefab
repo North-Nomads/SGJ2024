@@ -919,6 +919,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 145c5022e769e3b49ac30e3915da9214, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialBulletSpread: 4
+  finalBulletSpreadAngle: 4
+  initalFireDelay: 0.1
+  finalFireDelay: 0.1
+  timeToRampUp: 1
+  timeToIncreaseAccuracy: 1
+  model: {fileID: 11400000, guid: fd4560fe1dcd3cf4b820828e6737c9b7, type: 2}
 --- !u!1 &6942278718771736976
 GameObject:
   m_ObjectHideFlags: 0
