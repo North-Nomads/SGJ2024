@@ -13,6 +13,8 @@ namespace SGJ.Projectiles
 
         public abstract void KeepMoving();
 
-        public abstract void OnInstantiated(Vector3 position, float speed, Vector3 normalizedFlyDirection);
+        public abstract IProjectile OnInstantiated(Vector3 position, float speed, Vector3 normalizedFlyDirection);
+
+        public abstract void OnReactivated(Vector3 position, float speed, Vector3 normalizedFlyDirection);
     }
 }

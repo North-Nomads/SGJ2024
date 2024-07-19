@@ -1,7 +1,6 @@
 using SGJ.Combat;
 using SGJ.Weapons.Modifiers;
 using UnityEngine;
-using UnityEngine.Assertions.Must;
 using UnityEngine.Pool;
 
 namespace SGJ.Weapons.Instances
@@ -19,6 +18,7 @@ namespace SGJ.Weapons.Instances
         [SerializeField] private float timeToIncreaseAccuracy;
         //[SerializeField] private float ammo;
         //[SerializeField] private float flashTickDuration;
+        [SerializeField] private GameObject gunPoint;
 
         [SerializeField] WeaponModel model;
  
@@ -43,19 +43,23 @@ namespace SGJ.Weapons.Instances
 
         public void TryPerformAttack()
         {
-            
+            if(_fireRateTimer.ReadyToFire)
+            {
+                _pool.Get();
+                _fireRateTimer.OnShot();
+            }
         }
 
         private void Start()
         {
             _animator = GetComponent<Animator>();
             _fireRateTimer = new AcceleratedWeaponTimer(initalFireDelay, finalFireDelay, timeToRampUp);
-            //_pool = new(SpawnBullet, OnGetBullet, OnReleaseBullet, OnDestroyBullet, true, 30, 70);
+            _pool = new(SpawnBullet, OnGetBullet, OnReleaseBullet, OnDestroyBullet, true, 0, 70);
 
         }
         private void Update()
         {
-            
+            _fireRateTimer.OnGameTick();
         }
 
         /*private void Shoot()
@@ -99,28 +103,36 @@ namespace SGJ.Weapons.Instances
             float bulletSpread = Mathf.Lerp(Mathf.Tan(Weapon.SpreadAngle) / 2,
                 Mathf.Tan(FinalSpreadAngle) / 2, _fireRateTimer.AccelerationProcentage);
             Vector3 direction = transform.forward + Vector3.Cross(transform.forward, Vector3.up).normalized * Random.Range(-bulletSpread, bulletSpread);
-            IProjectile bullet = Weapon.WeaponProjectile;
-            bullet.OnInstantiated(transform.position, Weapon.ProjectileSpeed, direction.normalized);
-            return bullet;
+            IProjectile bulletPrefab = Weapon.WeaponProjectile;
+            var bulletInstance = bulletPrefab.OnInstantiated(gunPoint.transform.position, Weapon.ProjectileSpeed, direction.normalized);
+            bulletInstance.OnHitEvent += OnBulletHit;
+            return bulletInstance;
         }
 
-        private void OnGetBullet(Bullet bullet)
+
+        private void OnGetBullet(IProjectile bullet)
         {
             float bulletSpread = Mathf.Lerp(Mathf.Tan(Weapon.SpreadAngle) / 2,
                 Mathf.Tan(FinalSpreadAngle) / 2, _fireRateTimer.AccelerationProcentage);
             Vector3 direction = transform.forward + Vector3.Cross(transform.forward, Vector3.up).normalized * Random.Range(-bulletSpread, bulletSpread);
-            bullet.transform.SetPositionAndRotation(transform.position, transform.rotation);
-            bullet.gameObject.SetActive(true);
+            bullet.OnReactivated(transform.position, Weapon.ProjectileSpeed, direction.normalized);
+            (bullet as Bullet).transform.SetPositionAndRotation(gunPoint.transform.position, Quaternion.LookRotation(direction));
+            (bullet as Bullet).gameObject.SetActive(true);
         }
 
-        private void OnReleaseBullet(Bullet bullet)
+        private void OnReleaseBullet(IProjectile bullet)
         {
-            bullet.gameObject.SetActive(false);
+            (bullet as Bullet).gameObject.SetActive(false);
         }
 
-        private void OnDestroyBullet(Bullet bullet)
+        private void OnDestroyBullet(IProjectile bullet)
         {
-            Destroy(bullet.gameObject);
+            Destroy((bullet as Bullet).gameObject);
+        }
+
+        private void OnBulletHit(object sender, System.EventArgs e)
+        {
+            _pool.Release(sender as IProjectile);
         }
     }
 }

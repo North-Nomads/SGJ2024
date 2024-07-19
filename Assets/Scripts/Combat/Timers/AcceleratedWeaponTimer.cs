@@ -9,7 +9,7 @@ namespace SGJ.Combat
         private readonly float _rampUpTime;
 
         private float _currentFireDelay;
-        //currently locked at _rampUpTime;
+        //currently capped at _rampUpTime;
         private float _currentShootingTime;
         private float _lastShotTime;
 
@@ -26,15 +26,21 @@ namespace SGJ.Combat
 
         public float AccelerationProcentage => _currentShootingTime / _rampUpTime;
 
+        public bool ReadyToFire { get; private set; } = true;
         public void OnGameTick()
         {
-            if(_lastShotTime + _currentFireDelay > Time.time)
+            if (_lastShotTime + _currentFireDelay > Time.time)
+                return;
+            
+            if(_currentShootingTime > 0)
                 _currentShootingTime -= Time.deltaTime;
+            ReadyToFire = true;
         }
 
         public void OnShot()
         {
             _lastShotTime = Time.time;
+            ReadyToFire = false;
             if (_currentShootingTime >= _rampUpTime)
                 return;
 

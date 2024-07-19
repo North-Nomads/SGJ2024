@@ -5,5 +5,7 @@ namespace SGJ.Combat
         public void OnShot();
 
         public void OnGameTick();
+
+        public bool ReadyToFire { get; }
     }
 }

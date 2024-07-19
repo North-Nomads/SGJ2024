@@ -6,6 +6,8 @@ namespace SGJ.Combat
     {
         private float lastShotTime;
 
+        public bool ReadyToFire => throw new System.NotImplementedException();
+
         public void OnGameTick()
         {
             throw new System.NotImplementedException();
